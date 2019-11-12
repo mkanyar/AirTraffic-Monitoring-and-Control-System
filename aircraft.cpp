@@ -1,17 +1,18 @@
 #include "aircraft.h"
 
-int aircraft::getX(){return this->x;}
-int aircraft::getY(){return this->y;}
-int aircraft::getZ(){return this->z;}
-int aircraft::getSpeedX(){return this->speed_x;}
-int aircraft::getSpeedY(){return this->speed_y;}
-int aircraft::getSpeedZ(){return this->speed_z;}
+using namespace std;
+string aircraft::getX(){return this->x;}
+string aircraft::getY(){return this->y;}
+string aircraft::getZ(){return this->z;}
+string aircraft::getSpeedX(){return this->speed_x;}
+string aircraft::getSpeedY(){return this->speed_y;}
+string aircraft::getSpeedZ(){return this->speed_z;}
 	
 aircraft::aircraft()
 {
 }
 
-aircraft::aircraft(std::string ID, int speed_x, int speed_y, int speed_z, int x, int y, int z)
+aircraft::aircraft(string ID, string speed_x, string speed_y, string speed_z, string x, string y, string z)
 {
 	this->ID = ID;
 	this->speed_x = speed_x;
@@ -22,11 +23,9 @@ aircraft::aircraft(std::string ID, int speed_x, int speed_y, int speed_z, int x,
 	this->z = z;
 }
 
-std::map<std::string,int[]>aircraft::hit(){
-	std::map<std::string,int[]> a;
-	int list[3] = {this->x,this->y,this->z};
-	a[this->ID] = list;
-	return a;
+string* aircraft::hit(){
+	string list[4] = {this->ID,this->x,this->y,this->z};
+	return list;
 }
 
 aircraft::~aircraft()

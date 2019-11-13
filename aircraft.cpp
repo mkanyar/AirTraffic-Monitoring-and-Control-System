@@ -19,7 +19,7 @@ aircraft::aircraft()
 	this->speed_z=0;
 }
 
-aircraft::aircraft(string ID, int speed_x, int speed_y, int speed_z, int x, int y, int z)
+aircraft::aircraft(string ID, float speed_x, float speed_y, float speed_z, float x, float y, float z)
 {
 	this->ID = ID;
 	this->speed_x = speed_x;

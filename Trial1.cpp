@@ -38,7 +38,7 @@ void displaye_manager(int read_line){
 }
 
 void flying_aircrafts(vector<aircraft> aircraft_list){
-	for(int i =0;i<aircraft_list.size();i++){
+	for(signed int i =0;i<aircraft_list.size();i++){
 		aircraft_list[i].fly();
 	}
 }
@@ -51,7 +51,7 @@ int main() {
 	name.hit(mymap);
 	//radar.hit(aircraft*,map)
 	cout<<mymap["hello"][0]<<endl;
-	displaye_manager();
+	displaye_manager(0);
 	return 0;
 }
 

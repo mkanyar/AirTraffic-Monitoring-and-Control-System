@@ -11,7 +11,7 @@ class aircraft
 private:
 	//attributes
 	string ID;
-	int speed_x, speed_y, speed_z, x, y, z;
+	float speed_x, speed_y, speed_z, x, y, z;
 	//-1 id for unknown aircraft
 	
 public:

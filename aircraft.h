@@ -9,22 +9,22 @@ class aircraft
 private:
 	//attributes
 	string ID;
-	string speed_x, speed_y, speed_z, x, y, z;
+	int speed_x, speed_y, speed_z, x, y, z;
 	//-1 id for unknown aircraft
 	
 public:
 	aircraft();
-	aircraft(string ID, string speed_x, string speed_y, string speed_z, string x, string y, string z);
+	aircraft(string,int,int,int,int,int,int);
 	virtual ~aircraft();
 	
 	//getters & setters
-	string getX();
-	string getY();
-	string getZ();
-	string getSpeedX();
-	string getSpeedY();
-	string getSpeedZ();
-	string* hit();
+	int getX();
+	int getY();
+	int getZ();
+	int getSpeedX();
+	int getSpeedY();
+	int getSpeedZ();
+	void hit(map<string,int*>&);
 };
 
 #endif /*AIRCRAFT_H_*/

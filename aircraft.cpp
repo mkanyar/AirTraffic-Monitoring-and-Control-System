@@ -1,18 +1,25 @@
 #include "aircraft.h"
 
 using namespace std;
-string aircraft::getX(){return this->x;}
-string aircraft::getY(){return this->y;}
-string aircraft::getZ(){return this->z;}
-string aircraft::getSpeedX(){return this->speed_x;}
-string aircraft::getSpeedY(){return this->speed_y;}
-string aircraft::getSpeedZ(){return this->speed_z;}
+int aircraft::getX(){return this->x;}
+int aircraft::getY(){return this->y;}
+int aircraft::getZ(){return this->z;}
+int aircraft::getSpeedX(){return this->speed_x;}
+int aircraft::getSpeedY(){return this->speed_y;}
+int aircraft::getSpeedZ(){return this->speed_z;}
 	
 aircraft::aircraft()
 {
+	this->ID="";
+	this->x=0;
+	this->y=0;
+	this->z=0;
+	this->speed_x=0;
+	this->speed_y=0;
+	this->speed_z=0;
 }
 
-aircraft::aircraft(string ID, string speed_x, string speed_y, string speed_z, string x, string y, string z)
+aircraft::aircraft(string ID, int speed_x, int speed_y, int speed_z, int x, int y, int z)
 {
 	this->ID = ID;
 	this->speed_x = speed_x;
@@ -23,9 +30,9 @@ aircraft::aircraft(string ID, string speed_x, string speed_y, string speed_z, st
 	this->z = z;
 }
 
-string* aircraft::hit(){
-	string list[4] = {this->ID,this->x,this->y,this->z};
-	return list;
+void aircraft::hit(map<string,int*>& mymap){
+	int list[3] = {this->x,this->y,this->z};
+	mymap.insert(pair<string,int*>(this->ID,list));
 }
 
 aircraft::~aircraft()

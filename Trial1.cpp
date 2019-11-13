@@ -1,22 +1,39 @@
 #include <iostream>
 #include "aircraft.h"
 #include <iostream>
-#include <fstream>
-
+#include <stdio.h>
+#include <unistd.h>
+#include <pthread>
 using namespace std;
-void displayer(){
-	string line;
-	ifstream myfile ("Tracker.txt");
-	  if (myfile.is_open())
-	  {
-	    while ( getline (myfile,line) )
-	    {
-	      cout << line << '\n';
-	    }
-	    myfile.close();
-	  }
+extern "C" void displayer();
 
-	  else cout << "Unable to open file";
+void displayer(){
+	FILE *fp = fopen("Tracker.txt","r");
+	char c;
+	string s;
+	int line = -1;
+	int temp=line;
+	   while(1)
+	   {
+	      c = fgetc(fp);
+	      s+=c;
+	      if(c=='\n'){
+	      	 line++;
+	      }
+	      if(temp!=line)
+	      {
+	    	  cout<<s;
+	    	  temp=line;
+	    	  s="";
+	      }
+	      if( feof(fp) )
+	      {
+	          break;
+	      }
+
+	   }
+
+	fclose(fp);
 }
 int main() {
 	cout << "Welcome to the Momentics IDE" << endl;

@@ -25,6 +25,7 @@ public:
 	int getSpeedY();
 	int getSpeedZ();
 	void hit(map<string,int*>&);
+	void fly();
 };
 
 #endif /*AIRCRAFT_H_*/

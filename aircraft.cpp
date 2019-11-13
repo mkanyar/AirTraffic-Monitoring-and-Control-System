@@ -34,7 +34,11 @@ void aircraft::hit(map<string,int*>& mymap){
 	int list[3] = {this->x,this->y,this->z};
 	mymap.insert(pair<string,int*>(this->ID,list));
 }
-
+void aircraft::fly(){
+	this->x+=this->speed_x;
+	this->y+=this->speed_y;
+	this->z+=this->speed_z;
+}
 aircraft::~aircraft()
 {
 }

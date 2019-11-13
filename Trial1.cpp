@@ -3,15 +3,16 @@
 #include <iostream>
 #include <stdio.h>
 #include <unistd.h>
-#include <pthread>
+#include <pthread.h>
+#include <vector>
 using namespace std;
-extern "C" void displayer();
+extern "C" void displaye_manager();
 
-void displayer(){
+void displaye_manager(int read_line){
 	FILE *fp = fopen("Tracker.txt","r");
 	char c;
 	string s;
-	int line = -1;
+	int line = 0;
 	int temp=line;
 	   while(1)
 	   {
@@ -35,14 +36,22 @@ void displayer(){
 
 	fclose(fp);
 }
+
+void flying_aircrafts(vector<aircraft> aircraft_list){
+	for(int i =0;i<aircraft_list.size();i++){
+		aircraft_list[i].fly();
+	}
+}
+
 int main() {
 	cout << "Welcome to the Momentics IDE" << endl;
 	aircraft name("hello",1,2,3,4,5,6);
 	cout<<"object created"<<endl;
-	map<string,int*>mymap;
+	map<string,float*>mymap;
 	name.hit(mymap);
+	//radar.hit(aircraft*,map)
 	cout<<mymap["hello"][0]<<endl;
-	displayer();
+	displaye_manager();
 	return 0;
 }
 

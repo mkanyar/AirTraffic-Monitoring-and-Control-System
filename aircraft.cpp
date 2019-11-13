@@ -1,12 +1,12 @@
 #include "aircraft.h"
 
 using namespace std;
-int aircraft::getX(){return this->x;}
-int aircraft::getY(){return this->y;}
-int aircraft::getZ(){return this->z;}
-int aircraft::getSpeedX(){return this->speed_x;}
-int aircraft::getSpeedY(){return this->speed_y;}
-int aircraft::getSpeedZ(){return this->speed_z;}
+float aircraft::getX(){return this->x;}
+float aircraft::getY(){return this->y;}
+float aircraft::getZ(){return this->z;}
+float aircraft::getSpeedX(){return this->speed_x;}
+float aircraft::getSpeedY(){return this->speed_y;}
+float aircraft::getSpeedZ(){return this->speed_z;}
 	
 aircraft::aircraft()
 {
@@ -30,9 +30,9 @@ aircraft::aircraft(string ID, int speed_x, int speed_y, int speed_z, int x, int 
 	this->z = z;
 }
 
-void aircraft::hit(map<string,int*>& mymap){
-	int list[3] = {this->x,this->y,this->z};
-	mymap.insert(pair<string,int*>(this->ID,list));
+void aircraft::hit(map<string,float*>& mymap){
+	float list[3] = {this->x,this->y,this->z};
+	mymap.insert(pair<string,float*>(this->ID,list));
 }
 void aircraft::fly(){
 	this->x+=this->speed_x;

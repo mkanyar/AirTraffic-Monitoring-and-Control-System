@@ -3,6 +3,8 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <pthread.h>
+
 using namespace std;
 class aircraft
 {
@@ -14,17 +16,17 @@ private:
 	
 public:
 	aircraft();
-	aircraft(string,int,int,int,int,int,int);
+	aircraft(string,float,float,float,float,float,float);
 	virtual ~aircraft();
 	
 	//getters & setters
-	int getX();
-	int getY();
-	int getZ();
-	int getSpeedX();
-	int getSpeedY();
-	int getSpeedZ();
-	void hit(map<string,int*>&);
+	float getX();
+	float getY();
+	float getZ();
+	float getSpeedX();
+	float getSpeedY();
+	float getSpeedZ();
+	void hit(map<string,float*>&);
 	void fly();
 };
 

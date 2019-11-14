@@ -30,13 +30,7 @@ comm::comm()
 		speed_z=0;
 		entry_time=0;
 
-	    this->ID="";
-		this->x=0;
-		this->y=0;
-		this->z=0;
-		this->speed_x=0;
-		this->speed_y=0;
-		this->speed_z=0;
+
 
 
 }

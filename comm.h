@@ -7,7 +7,11 @@ using namespace std;
 class comm
 {private:
     string ID;
+
 	float speed_x, speed_y, speed_z, x, y, z, entry_time;
+
+	float speed_x, speed_y, speed_z, x, y, z, entry_time,changeSpeedX,changeSpeedY;
+
 
 public:
 	comm();
@@ -22,8 +26,12 @@ public:
    	float getSpeedY();
    	float getSpeedZ();
    	float getEntryTime();
+
    	void changeSpeed(float,float,float);
 
+=======
+   	void setchangeSpeedX(float);
+   	void setchangeSpeedY(float);
 
 
 

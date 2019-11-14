@@ -16,10 +16,7 @@
    	speed_z=z;
    	}
 
-   	float comm::getSpeedX(){return x;};
-   	float comm::getSpeedY(){return y;};
-   	float comm::getSpeedZ(){return z;};
-   	float comm::getEntryTime(){return entry_time;};
+
    	
 comm::comm()
 {
@@ -32,8 +29,8 @@ comm::comm()
 		speed_y=0;
 		speed_z=0;
 		entry_time=0;
-=======
-	this->ID="";
+
+	    this->ID="";
 		this->x=0;
 		this->y=0;
 		this->z=0;

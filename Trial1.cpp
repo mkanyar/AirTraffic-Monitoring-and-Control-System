@@ -49,19 +49,16 @@ void flying_aircrafts(vector<aircraft> aircraft_list){
 }
 
 int main() {
-	cout << "Welcome to the Momentics IDE" << endl;
-	aircraft name("hello",1,2,3,4,5,6);
-	cout<<"object created"<<endl;
-	map<string,float*>mymap;
-	name.hit(mymap);
-	//radar.hit(aircraft*,map)
-	cout<<mymap["hello"][0]<<endl;
+
+
+	
 	displaye_manager(0);
 	write_file();
 	cout<<endl<<"Second Run:" << endl;
 	displaye_manager(1);
 	cout<<endl<<"Third Run:" << endl;
 	displaye_manager(3);
+
 	return 0;
 }
 

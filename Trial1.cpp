@@ -51,7 +51,7 @@ int main() {
 	name.hit(mymap);
 	//radar.hit(aircraft*,map)
 	cout<<mymap["hello"][0]<<endl;
-	displaye_manager(0);
+	//displaye_manager(0);
 	return 0;
 }
 

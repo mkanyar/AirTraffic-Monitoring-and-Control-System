@@ -1,5 +1,7 @@
 #include "comm.h"
 #include <string>
+#include<iostream>
+
     string comm:: getID(){return this->ID;};
     float comm::getX(){return this->x;}
    	float comm::getY(){return y;};
@@ -11,13 +13,17 @@
    	float comm::getEntryTime(){return entry_time;};
    	void comm::changeSpeed(float x,float y,float z)
    	{
+
+
    	speed_x=x;
    	speed_y=y;
    	speed_z=z;
+
+
    	}
 
 
-   	
+
 comm::comm()
 {
 

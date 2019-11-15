@@ -27,6 +27,7 @@ public:
    	float getSpeedZ();
    	float getEntryTime();
    	void changeSpeed(float,float,float);
+   	void getPlaneStatus(int);
 
 
 

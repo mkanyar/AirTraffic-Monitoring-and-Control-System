@@ -6,9 +6,9 @@
 #include <pthread.h>
 #include <vector>
 using namespace std;
-extern "C" void displaye_manager();
+extern "C" void display_manager();
 
-void displaye_manager(int read_line){
+void display_manager(int read_line){
 	FILE *fp = fopen("Tracker.txt","r");
 	char c;
 	string s;
@@ -44,14 +44,14 @@ void flying_aircrafts(vector<aircraft> aircraft_list){
 }
 
 int main() {
-	cout << "Welcome to the Momentics IDE" << endl;
-	aircraft name("hello",1,2,3,4,5,6);
+	aircraft name("ac1",1,2,3,4,5,6,7);
+	/*cout << "Welcome to the Momentics IDE" << endl;
 	cout<<"object created"<<endl;
 	map<string,float*>mymap;
 	name.hit(mymap);
 	//radar.hit(aircraft*,map)
 	cout<<mymap["hello"][0]<<endl;
-	displaye_manager(0);
+	display_manager(0);*/
 	return 0;
 }
 

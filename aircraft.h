@@ -15,8 +15,15 @@ private:
 	string id;
 	float speed_x, speed_y, speed_z, x, y, z, time;
 	//-1 id for unknown aircraft
+	float x_low = x-1.5;
+	float x_high = x+1.5;
+	float y_low = y-1.5;
+	float y_high = y+1.5;
+	float z_low = z-1000;
+	float z_high = z+1000;
 
 public:
+	float safe_space[2][3] = {{x_low,y_low,z_low},{x_high,y_high,z_high}};
 	aircraft();
 	aircraft(string,float,float,float,float,float,float,float);
 	virtual ~aircraft();

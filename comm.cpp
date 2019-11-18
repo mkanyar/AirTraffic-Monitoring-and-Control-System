@@ -22,7 +22,7 @@
 //   	speed_z=z;
 //   	}
 
-   	void receiveMessage(vector <string> tokens){
+   	void comm::receiveMessage(vector <string> tokens){
    		string TaskNumber = tokens[0];
    		stringstream transform(TaskNumber);
    		int TaskNumberInt = 0;

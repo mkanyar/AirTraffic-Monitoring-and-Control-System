@@ -4,7 +4,9 @@ aircraft::aircraft()
 {
 	this->id="";
 	this->x=0;
+	this->old_x=x;
 	this->y=0;
+	this->old_y=y;
 	this->z=0;
 	this->speed_x=0;
 	this->speed_y=0;
@@ -79,6 +81,6 @@ bool aircraft::activated(float clock){
 }
 
 
-aircraft::~aircraft()
+/*aircraft::~aircraft()
 {
-}
+}*/

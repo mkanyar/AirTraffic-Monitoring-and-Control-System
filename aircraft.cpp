@@ -22,6 +22,25 @@ aircraft::aircraft(string id, float speed_x, float speed_y, float speed_z, float
 	this->y = y;
 	this->z = z;
 	this->time = time;
+
+//	cout <<"x is "<< x<<endl;
+//
+//	float x_low = this->x-1.5;
+//	cout <<"x low is "<< x_low<<endl;
+//	float x_high = this->x+1.5;
+//	cout << "x high is "<<x_high<<endl;
+//	float y_low = this->y-1.5;
+//	float y_high = this->y+1.5;
+//	float z_low = this->z-1000;
+//	float z_high = this->z+1000;
+//	this->safe_space[0][0]=x_low;
+//	this->safe_space[0][1]=y_low;
+//	this->safe_space[0][2]=z_low;
+//
+//	this->safe_space[1][0]=x_high;
+//	this->safe_space[1][1]=y_high;
+//	this->safe_space[1][2]=z_high;
+
 }
 
 string aircraft::getID(){return this->id;}
@@ -49,10 +68,17 @@ void aircraft::setTime(float time){this->time = time;}
 }*/
 
 void aircraft::fly() {
-	this->x += this->speed_x;
-	this->y += this->speed_y;
-	this->z += this->speed_z;
+	this->setX(this->x+this->speed_x);
+	this->setY(this->y + this->speed_y);
+	this->setZ(this->z + this->speed_z);
+
 }
+
+bool aircraft::activated(float clock){
+	return clock>=this->time;
+}
+
+
 aircraft::~aircraft()
 {
 }

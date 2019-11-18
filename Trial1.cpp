@@ -11,11 +11,14 @@
 #include <fstream>
 #include <chrono>
 #include "ATC.h"
+#include "TestCase.h"
 using namespace std;
 extern "C" void displaye_manager_thread();
 extern "C" void write_file_thread();
 extern "C" void display_manager_c();
 
+vector<aircraft> airspace;
+float GLOBAL_CLOCK;
 
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 int global_clock = 0;
@@ -44,7 +47,7 @@ void* Tokenizer(string message){
 
 	if(!tokens.empty()){
 		//This is a method for 'comm' that will be used when we initialize it.
-		receiveMessage(tokens);
+		//receiveMessage(tokens);
 	}
 }
 
@@ -207,14 +210,21 @@ void display_manager_c(){
 	fclose(fp);
 }
 
-void flying_aircrafts(vector<aircraft> aircraft_list){
-	for(signed int i =0;i<aircraft_list.size();i++){
-		aircraft_list[i].fly();
+void* flying_aircrafts(void* arg){
+	//vector<aircraft>* aircraft_list =  static_cast<vector<aircraft>*>(arg);
+	while(true){
+	GLOBAL_CLOCK++;
+	for(unsigned int i =0;i<airspace.size();i++){
+		if(airspace[i].activated((float)GLOBAL_CLOCK))
+			airspace[i].fly();
+	}
+	//}
+	sleep(1);
 	}
 }
 
-
-pthread_t createSchedFifoThread(void* (*pThreadFunc)(void*), int priority, int schedpolicy, bool b_detached = false)
+template<typename T>
+pthread_t createSchedFifoThread(void* (*pThreadFunc)(void*), int priority, int schedpolicy, T parameter,bool b_detached = false)
 {
     pthread_t tid;
     pthread_attr_t attr;
@@ -225,33 +235,54 @@ pthread_t createSchedFifoThread(void* (*pThreadFunc)(void*), int priority, int s
     pthread_attr_setschedpolicy(&attr, schedpolicy);
 
     if(b_detached)
-        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED); //分离模式，无需的等待（pthread_join）之后才释放占用资源，而是返回后自动释放占用的资源
+        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
-    pthread_create(&tid, &attr, pThreadFunc, NULL);
+    pthread_create(&tid, &attr, pThreadFunc, (void*)&parameter);
     pthread_attr_destroy(&attr);
 
     return tid;
 }
 
 int main() {
-		int read_line=-1;
+		GLOBAL_CLOCK=0;
+		TestCase tc();
 		cout << "Welcome to the ATC System" << endl;
+		//vector<aircraft> airspace;
+		for(unsigned int i=0;i<5;i++){
+			airspace.push_back(aircraft(to_string(i),1,1,1,1,1,1,0));
+		}
+		ATC atc(airspace);
+		//pthread_t tid1;
+		pthread_t tid1, tid2,tid3;
+		tid1 = createSchedFifoThread(flying_aircrafts, 99, SCHED_RR, airspace,false);
+		tid2 = createSchedFifoThread(atc.Collision_detection, 10, SCHED_RR, NULL,false);
+		tid3 = createSchedFifoThread(Operator_Commands, 98, SCHED_RR, NULL,false);
+		pthread_join(tid1,NULL);
+		pthread_join(tid2,NULL);
+		pthread_join(tid3,NULL);
 
-//		pthread_t tid1, tid2;
-//		tid1 = createSchedFifoThread(displaye_manager_thread, 10, SCHED_RR, false);
-//		tid2 = createSchedFifoThread(write_file_thread, 10, SCHED_RR, false);
+//		auto start = std::chrono::system_clock::now();
+//		cout << atc.Collision_detection()<<endl;
+//		auto end = std::chrono::system_clock::now();
+//				auto elapsed = end - start;
+//				cout << "Elapsed time in nanoseconds : "
+//						<< chrono::duration_cast<chrono::nanoseconds>(end - start).count()
+//						<< " ns" << endl;
 //
-//		pthread_join(tid1,NULL);
-//		pthread_join(tid2,NULL);
-		aircraft a("1",1,1,1,9,11,1005,0);
-		aircraft b("2",1,1,1,9,11,1005,0);
-		aircraft c("3",1,1,1,400,200,-15000,0);
-		vector<aircraft> airlist;
-		airlist.push_back(a);
-		airlist.push_back(b);
-		airlist.push_back(c);
-		ATC atc(airlist);
-		cout << atc.Collision_detection()<<endl;
+//		start = std::chrono::system_clock::now();
+//
+//		flying_aircrafts(airspace);
+//
+//		end = std::chrono::system_clock::now();
+//		elapsed = end - start;
+//		cout << "Elapsed time in nanoseconds : "
+//				<< chrono::duration_cast<chrono::nanoseconds>(end - start).count()
+//				<< " ns" << endl;
+//		//cout<<airspace[0].getID()<<endl;
+//		cout<<airspace[0].getX()<<endl;
+//		for(aircraft ac:airspace){
+//			ac.get_status();
+//		}
 		return 0;
 }
 

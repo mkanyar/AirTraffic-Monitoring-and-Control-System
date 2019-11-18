@@ -3,6 +3,9 @@
 
 #include "trackfile.h"
 
+extern vector<aircraft> airspace;
+extern float GLOBAL_CLOCK;
+
 class radar : public trackfile
 {
 private:

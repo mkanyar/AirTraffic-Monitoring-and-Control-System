@@ -15,15 +15,9 @@ private:
 	string id;
 	float speed_x, speed_y, speed_z, x, y, z, time;
 	//-1 id for unknown aircraft
-	float x_low = x-1.5;
-	float x_high = x+1.5;
-	float y_low = y-1.5;
-	float y_high = y+1.5;
-	float z_low = z-1000;
-	float z_high = z+1000;
 
 public:
-	float safe_space[2][3] = {{x_low,y_low,z_low},{x_high,y_high,z_high}};
+	//float safe_space[2][3];
 	aircraft();
 	aircraft(string,float,float,float,float,float,float,float);
 	virtual ~aircraft();
@@ -37,7 +31,10 @@ public:
 	float getSpeedY();
 	float getSpeedZ();
 	float getTime();
-
+	void get_status(){
+		cout <<this->getID()<<","<<this->getSpeedX()<<","<<this->getSpeedY()<<","<<this->getSpeedZ()<<","<<
+				this->getX()<<","<<this->getY()<<","<<this->getZ()<<endl;
+	}
 	void setID(string id);
 	void setX(float x);
 	void setY(float y);
@@ -46,6 +43,10 @@ public:
 	void setSpeedY(float speed_y);
 	void setSpeedZ(float speed_z);
 	void setTime(float time);
+	bool activated(float clock);
+	void oval(){
+		this.x,this.y,this->z;
+	};
 
 	//void hit(map<string,float*>&);
 	void fly();

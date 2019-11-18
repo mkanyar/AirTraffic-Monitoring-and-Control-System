@@ -3,6 +3,8 @@
 
 #include "trackfile.h"
 
+extern string bufferString;
+
 class radar : public trackfile
 {
 private:
@@ -38,6 +40,7 @@ public:
 
 	void printActive();
 
+	void populateBuffer();
 
 };
 

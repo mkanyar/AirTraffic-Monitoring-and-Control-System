@@ -1,5 +1,7 @@
-
 #include "radar.h"
+
+//extern string from radar.h
+string bufferString;
 
 radar::radar()
 {
@@ -44,7 +46,7 @@ void radar::readInputFile(){
 
 		getline(infile, temp_time, ',');
 
-		//aircraft ac(temp_id, strtof(temp_speed_x),strtof(temp_speed_y),strtof(temp_speed_z),strtof(temp_x),strtof(temp_y),strtof(temp_z),strtof(temp_time));
+		//aircraft ac(stoi(temp_id), stoi(temp_speed_x),stoi(temp_speed_y),stoi(temp_speed_z),stoi(temp_x),stoi(temp_y),stoi(temp_z),stoi(temp_time));
 
 		//hit_list.push_back(ac);
 
@@ -68,7 +70,7 @@ void radar::printHitList(){
 //narrow down hit_list to active_list that are within airspace
 void radar::checkActive(int time){
 	for (unsigned int i = 0; i< hit_list.size(); i++){
-		if (hit_list[i].getTime() <= time && hit_list[i].getID() != "-1"){
+		if (hit_list[i].getTime() <= time && hit_list[i].getID() != -1){
 			if((hit_list[i].getX() >= lowerX && hit_list[i].getX() <= upperX) &&
 				(hit_list[i].getY() >= lowerY && hit_list[i].getY() <= upperY) &&
 				(hit_list[i].getZ() >= lowerZ && hit_list[i].getZ() <= upperZ)){
@@ -90,6 +92,24 @@ void radar::checkActive(int time){
 	}
 }
 
+void radar::populateBuffer(){
+
+	stringstream ss;
+
+	for (unsigned int i = 0; i < active_list.size(); i++){
+		ss << active_list[i].getID() << ","
+		   << active_list[i].getSpeedX() << ","
+		   << active_list[i].getSpeedY() << ","
+		   << active_list[i].getSpeedZ() << ","
+		   << active_list[i].getX() << ","
+		   << active_list[i].getY() << ","
+		   << active_list[i].getZ() << ","
+		   << active_list[i].getTime() << "\n";
+	}
+
+	bufferString += ss.str();
+}
+
 void radar::printActive(){
 	cout << "Active List: " << endl;
 	for (unsigned int i = 0; i < active_list.size(); i++){
@@ -99,4 +119,5 @@ void radar::printActive(){
 
 	}
 }
+
 

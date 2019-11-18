@@ -7,8 +7,11 @@
 
 #include "trackfile.h"
 
+//extern string from radar.h
+string bufferString;
+
 trackfile::trackfile() {
-	this->ac_position.setID("");
+	this->ac_position.setID(0);
 	this->ac_position.setX(0);
 	this->ac_position.setY(0);
 	this->ac_position.setZ(0);
@@ -22,7 +25,7 @@ trackfile::trackfile(aircraft ac) {
 	this->ac_position = ac;
 }
 
-void trackfile::newCurrentPosition(string id, float speed_x, float speed_y, float speed_z, float x, float y, float z, float time) {
+void trackfile::newCurrentPosition(int id, int speed_x, int speed_y, int speed_z, int x, int y, int z, int time) {
 
 	//current becomes previous
 	aircraft previous_position = this->ac_position;
@@ -71,6 +74,34 @@ void trackfile::newCurrentPosition(string id, float speed_x, float speed_y, floa
 	this->ac_position.setTime(time);
 }
 
+void* trackfile::write_file_thread(void* mys){
+	int i = 5;
+	char* s;
+	while(i>0){
+	//while(pthread_mutex_lock( &mutex1 )!=0);
+	//cout << global_clock<<" Got lock"<<endl;
+	s = bufferString;
+	//cout << global_clock << " Start writing"<<endl;
+	FILE *pFile2;
+
+	pFile2 = fopen("Tracker.txt", "a");
+	if(pFile2==NULL) {
+	    perror("Error opening file.");
+	}
+	else {
+		fprintf(pFile2, "%s", s);
+	}
+	fclose(pFile2);
+	//cout << s <<endl;
+	i--;
+	//global_clock++;
+	//cout << global_clock<<" Finish writing."<<endl;
+	//pthread_mutex_unlock( &mutex1 );
+	sleep(60);
+	}
+}
+
+
 //getters
 aircraft trackfile::getCurrentPosition() {
 	return this->ac_position;
@@ -79,6 +110,9 @@ aircraft trackfile::getCurrentPosition() {
 vector<aircraft> trackfile::getPreviousPositions() {
 	return this->ac_position_history;
 }
+
+
+
 
 trackfile::~trackfile() {
 	// TODO Auto-generated destructor stub

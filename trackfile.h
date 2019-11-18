@@ -27,9 +27,6 @@ private:
 	//list of all past positions
 	vector<aircraft> ac_position_history;
 
-	//.txt file to persist previous positions
-	ofstream log_file;
-
 public:
 	trackfile();
 

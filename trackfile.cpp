@@ -33,36 +33,6 @@ void trackfile::newCurrentPosition(int id, int speed_x, int speed_y, int speed_z
 	//save previous to history
 	this->ac_position_history.push_back(previous_position);
 
-	//persist onto a text file
-	log_file.open ("log.txt");
-
-	if (!log_file) {
-
-		cout << "Unable to open log.txt file" << endl;
-
-		exit(1);
-	}
-
-/*	friend ostream & operator << (ostream &out, const Aircraft & obj)
-	{
-		out << obj.id << ","
-			<<obj.speed_x<< ","
-			<<obj.speed_y<< ","
-			<<obj.speed_z<< ","
-			<<obj.x<< ","
-			<<obj.y<< ","
-			<<obj.z<< ","
-			<<obj.time<<endl;
-
-		return out;
-	}*/
-
-
-
-	//log_file << previous_position << "\n";
-	//TODO serialize object first
-	log_file.close();
-
 	//update new current position
 	this->ac_position.setID(id);
 	this->ac_position.setX(x);
@@ -76,11 +46,11 @@ void trackfile::newCurrentPosition(int id, int speed_x, int speed_y, int speed_z
 
 void* trackfile::write_file_thread(void* mys){
 	int i = 5;
-	char* s;
+	const char* s;
 	while(i>0){
 	//while(pthread_mutex_lock( &mutex1 )!=0);
 	//cout << global_clock<<" Got lock"<<endl;
-	s = bufferString;
+	s = bufferString.c_str();
 	//cout << global_clock << " Start writing"<<endl;
 	FILE *pFile2;
 

@@ -16,8 +16,6 @@ using namespace std;
 extern "C" void displaye_manager_thread();
 extern "C" void write_file_thread();
 extern "C" void display_manager_c();
-vector<aircraft> airspace;
-float GLOBAL_CLOCK;
 
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 int global_clock = 0;
@@ -48,6 +46,7 @@ void* Tokenizer(string message){
 		//This is a method for 'comm' that will be used when we initialize it.
 		//receiveMessage(tokens);
 	}
+	return void*;
 }
 
 void* Operator_Commands(void* parameter){

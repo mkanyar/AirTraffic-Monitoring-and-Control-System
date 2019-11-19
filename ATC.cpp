@@ -7,14 +7,14 @@
 
 #include "ATC.h"
 #include <chrono>
-vector<aircraft> ATC::airspace;
-
+int GLOBAL_CLOCK=0;
+vector<aircraft> airspace;
 ATC::ATC() {
 	// TODO Auto-generated constructor stub
 	//this->aircraftlist=NULL;
 }
 ATC::ATC(vector<aircraft> aircraftlist){
-	ATC::airspace=aircraftlist;
+	airspace=aircraftlist;
 }
 void* ATC::Collision_detection(void* arg){
 
@@ -23,11 +23,11 @@ void* ATC::Collision_detection(void* arg){
 	string collision_message;
 	//if global oval
 	//
-	for(unsigned int i =0;i<ATC::airspace.size();i++){
-		for(unsigned int j =0;j<ATC::airspace.size();j++){
+	for(unsigned int i =0;i<airspace.size();i++){
+		for(unsigned int j =0;j<airspace.size();j++){
 			if(i!=j){
-				if(collision(ATC::airspace[i],ATC::airspace[j]))
-					collision_message+="Collision happen with "+to_string(ATC::airspace[i].getID())+" and "+to_string(ATC::airspace[j].getID())+"\n";
+				if(collision(airspace[i],airspace[j]))
+					collision_message+="Collision happen with "+to_string(airspace[i].getID())+" and "+to_string(airspace[j].getID())+"\n";
 			}
 		}
 	}

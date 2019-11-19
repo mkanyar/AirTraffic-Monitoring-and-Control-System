@@ -2,6 +2,8 @@
 bool GLOBAL_OVAL=false;
 aircraft::aircraft()
 {
+	this->old_x=0;
+	this->old_y=0;
 	this->OVAL=false;
 	this->id=0;
 	this->x=0;

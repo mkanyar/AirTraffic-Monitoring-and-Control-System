@@ -9,10 +9,11 @@
 #include <vector>
 #include <cmath>
 using namespace std;
-extern float GLOBAL_CLOCK;
+extern int GLOBAL_CLOCK;
+extern vector<aircraft> airspace;
 class ATC {
 private:
-	static vector<aircraft> airspace;
+
 	static const int upperX = 100000;
 	static const int lowerX = 0;
 	static const int upperY = 100000;

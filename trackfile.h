@@ -11,7 +11,7 @@
 #include "aircraft.h"
 
 extern "C" void write_file_thread();
-
+extern string bufferString;
 /*
 The track file is the major data structure used by several processes to store current position, time-stamped previous positions,
 velocity and identification for each aircraft in the space.

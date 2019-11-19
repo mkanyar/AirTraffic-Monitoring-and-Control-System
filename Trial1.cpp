@@ -46,13 +46,11 @@ void* Tokenizer(string message){
 		//This is a method for 'comm' that will be used when we initialize it.
 		//receiveMessage(tokens);
 	}
-	return void*;
 }
 
 void* Operator_Commands(void* parameter){
 	int choice;
-	bool flag = true;
-	while(flag){
+	// Add user message to the buffer
 		cout<<"-------------------Operator Input Menu-------------------\nOptions:\n";
 		cout<<"0. Exit the program"<<endl;
 		cout<<"1. Command an aircraft to change Altitude"<<endl;
@@ -71,7 +69,6 @@ void* Operator_Commands(void* parameter){
 
 		switch(choice){
 		case 0:
-			flag=false;
 			break;
 		case 1:
 			message = "1,";
@@ -132,9 +129,8 @@ void* Operator_Commands(void* parameter){
 			break;
 		default:
 			cout<<"Invalid command, please try again.";
-		}
 
-		Tokenizer(message);
+		//comm' receive message Tokenizer(message);
 	}
 }
 
@@ -230,6 +226,14 @@ void* flying_aircrafts(void* arg){
 	}
 }
 
+void* console_in(void* arg){
+	string choice;
+	while(true){
+		cin>>choice;
+		Operator_Commands(NULL);
+	}
+}
+
 template<typename T>
 pthread_t createSchedFifoThread(void* (*pThreadFunc)(void*), int priority, int schedpolicy, T parameter,bool b_detached = false)
 {
@@ -262,17 +266,13 @@ int main() {
 		//pthread_t tid1;
 		pthread_t tid1, tid2,tid3;
 		tid1 = createSchedFifoThread(flying_aircrafts, 99, SCHED_RR, airspace,false);
-//		tid2 = createSchedFifoThread(atc.Collision_detection, 10, SCHED_RR, NULL,false);
+		tid2 = createSchedFifoThread(console_in, 98, SCHED_RR, NULL,false);
 //		tid3 = createSchedFifoThread(Operator_Commands, 98, SCHED_RR, NULL,false);
 
 //		pthread_join(tid2,NULL);
 //		pthread_join(tid3,NULL);
 
 		cout<<"main"<<endl;
-		sleep(10);
-		GLOBAL_OVAL=true;
-		sleep(10);
-		GLOBAL_OVAL=false;
 		pthread_join(tid1,NULL);
 //		auto start = std::chrono::system_clock::now();
 //		cout << atc.Collision_detection()<<endl;

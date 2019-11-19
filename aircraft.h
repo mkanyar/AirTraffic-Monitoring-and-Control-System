@@ -13,14 +13,14 @@
 #include <stdio.h>
 #include <unistd.h>
 
-using namespace std;
 extern bool GLOBAL_OVAL;
+using namespace std;
 class aircraft
 {
 private:
 	//attributes
 	int id, speed_x, speed_y, speed_z, x, y, z, time;
-	int count = 0;
+    int count=1;
 	//-1 id for unknown aircraft
 
 public:
@@ -57,44 +57,55 @@ public:
 		}
 		return GLOBAL_CLOCK>=this->time;
 	}
+	void setID(string id);
+	void setX(float x);
+	void setY(float y);
+	void setZ(float z);
+	void setSpeedX(float speed_x);
+	void setSpeedY(float speed_y);
+	void setSpeedZ(float speed_z);
+	void setTime(float time);
+	bool activated(float clock);
 
-	//void hit(map<string,int*>&);
-	void fly();
+
+	//for the oval function we assume the radius is 1 and the origin is at 90 degrees.
 	void oval(){
 
-			if(count == 1)
-			{
-				old_x=this->x;
-				old_y=this->y;
-				origin.push_back(this->x);
-				origin.push_back(this->y-1);
-
-			}
-					if ((count%4)==0){
-						this->x+=0;
-						this->y+=0;
-						count+=1;
-					}
-
-					if ((count%4)==1){
-						this->x-=1;
-						this->y+=-1;
-						count+=1;
-								}
-					if ((count%4)==2){
-						this->x+=1;
-						this->y+=1;
-						count+=1;
-
-								}
-					if ((count%4)==3){
-						this->x+=-1;
-						this->y+=1;
-	                    count+=1;
-
-								}
+		if(count == 1)
+		{
+			old_x=this->x;
+			old_y=this->y;
+			origin.push_back(this->x);
+			origin.push_back(this->y-1);
 
 		}
-};
+				if ((count%4)==0){
+					this->x+=0;
+					this->y+=0;
+					count+=1;
+				}
 
+				if ((count%4)==1){
+					this->x-=1;
+					this->y+=-1;
+					count+=1;
+							}
+				if ((count%4)==2){
+					this->x+=1;
+					this->y+=1;
+					count+=1;
+
+							}
+				if ((count%4)==3){
+					this->x+=-1;
+					this->y+=1;
+                    count+=1;
+
+							}
+
+	}
+	//void hit(map<string,int*>&);
+	void fly();
+
+};
 #endif /*AIRCRAFT_H_*/

@@ -2,8 +2,8 @@
 #define RADAR_H_
 
 #include "trackfile.h"
+#include "aircraft.h"
 
-extern string bufferString;
 
 class radar : public trackfile
 {

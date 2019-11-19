@@ -6,9 +6,8 @@
  */
 
 #include "trackfile.h"
-
+string bufferString="";
 //extern string from radar.h
-string bufferString;
 
 trackfile::trackfile() {
 	this->ac_position.setID(0);

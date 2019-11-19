@@ -26,6 +26,8 @@ aircraft::aircraft(int id, int speed_x, int speed_y, int speed_z, int x, int y, 
 	this->y = y;
 	this->z = z;
 	this->time = time;
+	this->old_x=0;
+	this->old_y=0;
 }
 
 int aircraft::getID(){return this->id;}
@@ -57,6 +59,12 @@ void aircraft::fly() {
 	this->y += this->speed_y;
 	this->z += this->speed_z;
 }
-aircraft::~aircraft()
-{
+aircraft::~aircraft(){
+
 }
+
+
+/*aircraft::~aircraft()
+>>>>>>> f490360ad390ef7b919990c67e6c1a641c4df718
+{
+}*/

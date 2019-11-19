@@ -16,7 +16,6 @@ using namespace std;
 extern "C" void displaye_manager_thread();
 extern "C" void write_file_thread();
 extern "C" void display_manager_c();
-
 vector<aircraft> airspace;
 float GLOBAL_CLOCK;
 
@@ -80,6 +79,7 @@ void* Operator_Commands(void* parameter){
 			cout <<"Please enter the ID of the aircraft and the altitude to be set in the following form:" << endl;
 			cout <<"'id,altitude'" << endl;
 			cin>>temp;
+			cout<< temp<<endl;
 			message+=temp;
 			break;
 		case 2:
@@ -211,14 +211,22 @@ void display_manager_c(){
 }
 
 void* flying_aircrafts(void* arg){
-	//vector<aircraft>* aircraft_list =  static_cast<vector<aircraft>*>(arg);
+
 	while(true){
+	//cout<<GLOBAL_CLOCK<<endl;
 	GLOBAL_CLOCK++;
 	for(unsigned int i =0;i<airspace.size();i++){
-		if(airspace[i].activated((float)GLOBAL_CLOCK))
+		if(airspace[i].activated(GLOBAL_CLOCK) && !airspace[i].OVAL && !GLOBAL_OVAL)
+		{
+			//cout<<"entering normal fly mode"<<endl;
 			airspace[i].fly();
+		}
+		else if(airspace[i].activated(GLOBAL_CLOCK) && (airspace[i].OVAL||GLOBAL_OVAL))
+		{
+			//cout<<"entring oval fly mode"<<endl;
+			airspace[i].oval();
+		}
 	}
-	//}
 	sleep(1);
 	}
 }
@@ -249,18 +257,24 @@ int main() {
 		cout << "Welcome to the ATC System" << endl;
 		//vector<aircraft> airspace;
 		for(unsigned int i=0;i<5;i++){
-			airspace.push_back(aircraft(to_string(i),1,1,1,1,1,1,0));
+			airspace.push_back(aircraft(i,1,1,1,1,1,1,0));
 		}
 		ATC atc(airspace);
 		//pthread_t tid1;
 		pthread_t tid1, tid2,tid3;
 		tid1 = createSchedFifoThread(flying_aircrafts, 99, SCHED_RR, airspace,false);
-		tid2 = createSchedFifoThread(atc.Collision_detection, 10, SCHED_RR, NULL,false);
-		tid3 = createSchedFifoThread(Operator_Commands, 98, SCHED_RR, NULL,false);
-		pthread_join(tid1,NULL);
-		pthread_join(tid2,NULL);
-		pthread_join(tid3,NULL);
+//		tid2 = createSchedFifoThread(atc.Collision_detection, 10, SCHED_RR, NULL,false);
+//		tid3 = createSchedFifoThread(Operator_Commands, 98, SCHED_RR, NULL,false);
 
+//		pthread_join(tid2,NULL);
+//		pthread_join(tid3,NULL);
+
+		cout<<"main"<<endl;
+		sleep(10);
+		GLOBAL_OVAL=true;
+		sleep(10);
+		GLOBAL_OVAL=false;
+		pthread_join(tid1,NULL);
 //		auto start = std::chrono::system_clock::now();
 //		cout << atc.Collision_detection()<<endl;
 //		auto end = std::chrono::system_clock::now();
@@ -285,66 +299,6 @@ int main() {
 //		}
 		return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

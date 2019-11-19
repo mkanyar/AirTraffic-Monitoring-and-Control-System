@@ -10,6 +10,8 @@
 
 #include "aircraft.h"
 
+extern "C" void write_file_thread();
+
 /*
 The track file is the major data structure used by several processes to store current position, time-stamped previous positions,
 velocity and identification for each aircraft in the space.
@@ -34,10 +36,12 @@ public:
 	trackfile(aircraft ac);
 
 	//set new current position and save old into history data structure AND log.txt
-	void newCurrentPosition(string id, float speed_x, float speed_y, float speed_z, float x, float y, float z, float time);
+	void newCurrentPosition(int id, int speed_x, int speed_y, int speed_z, int x, int y, int z, int time);
 
 	aircraft getCurrentPosition();
 	vector<aircraft> getPreviousPositions();
+
+	void* write_file_thread(void*);
 
 	virtual ~trackfile();
 };

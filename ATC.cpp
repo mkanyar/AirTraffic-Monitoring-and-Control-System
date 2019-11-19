@@ -21,11 +21,13 @@ void* ATC::Collision_detection(void* arg){
 	while(true){
 	auto start = std::chrono::system_clock::now();
 	string collision_message;
+	//if global oval
+	//
 	for(unsigned int i =0;i<ATC::airspace.size();i++){
 		for(unsigned int j =0;j<ATC::airspace.size();j++){
 			if(i!=j){
 				if(collision(ATC::airspace[i],ATC::airspace[j]))
-					collision_message+="Collision happen with "+ATC::airspace[i].getID()+" and "+ATC::airspace[j].getID()+"\n";
+					collision_message+="Collision happen with "+to_string(ATC::airspace[i].getID())+" and "+to_string(ATC::airspace[j].getID())+"\n";
 			}
 		}
 	}

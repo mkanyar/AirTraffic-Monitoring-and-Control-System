@@ -3,8 +3,7 @@
 
 #include "trackfile.h"
 
-extern vector<aircraft> airspace;
-extern float GLOBAL_CLOCK;
+extern string bufferString;
 
 class radar : public trackfile
 {
@@ -41,6 +40,7 @@ public:
 
 	void printActive();
 
+	void populateBuffer();
 
 };
 

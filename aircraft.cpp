@@ -1,8 +1,9 @@
 #include "aircraft.h"
-
+bool GLOBAL_OVAL=false;
 aircraft::aircraft()
 {
-	this->id="";
+	this->OVAL=false;
+	this->id=0;
 	this->x=0;
 	this->y=0;
 	this->z=0;
@@ -12,8 +13,9 @@ aircraft::aircraft()
 	this->time=0;
 }
 
-aircraft::aircraft(string id, float speed_x, float speed_y, float speed_z, float x, float y, float z, float time)
+aircraft::aircraft(int id, int speed_x, int speed_y, int speed_z, int x, int y, int z, int time)
 {
+	this->OVAL=false;
 	this->id = id;
 	this->speed_x = speed_x;
 	this->speed_y = speed_y;
@@ -22,63 +24,37 @@ aircraft::aircraft(string id, float speed_x, float speed_y, float speed_z, float
 	this->y = y;
 	this->z = z;
 	this->time = time;
-
-//	cout <<"x is "<< x<<endl;
-//
-//	float x_low = this->x-1.5;
-//	cout <<"x low is "<< x_low<<endl;
-//	float x_high = this->x+1.5;
-//	cout << "x high is "<<x_high<<endl;
-//	float y_low = this->y-1.5;
-//	float y_high = this->y+1.5;
-//	float z_low = this->z-1000;
-//	float z_high = this->z+1000;
-//	this->safe_space[0][0]=x_low;
-//	this->safe_space[0][1]=y_low;
-//	this->safe_space[0][2]=z_low;
-//
-//	this->safe_space[1][0]=x_high;
-//	this->safe_space[1][1]=y_high;
-//	this->safe_space[1][2]=z_high;
-
 }
 
-string aircraft::getID(){return this->id;}
-float aircraft::getX(){return this->x;}
-float aircraft::getY(){return this->y;}
-float aircraft::getZ(){return this->z;}
-float aircraft::getSpeedX(){return this->speed_x;}
-float aircraft::getSpeedY(){return this->speed_y;}
-float aircraft::getSpeedZ(){return this->speed_z;}
-float aircraft::getTime(){return this->time;}
+int aircraft::getID(){return this->id;}
+int aircraft::getX(){return this->x;}
+int aircraft::getY(){return this->y;}
+int aircraft::getZ(){return this->z;}
+int aircraft::getSpeedX(){return this->speed_x;}
+int aircraft::getSpeedY(){return this->speed_y;}
+int aircraft::getSpeedZ(){return this->speed_z;}
+int aircraft::getTime(){return this->time;}
 
-void aircraft::setID(string id){this->id = id;}
-void aircraft::setX(float x){this->x = x;}
-void aircraft::setY(float y){this->y = y;}
-void aircraft::setZ(float z){this->z = z;}
-void aircraft::setSpeedX(float speed_x){this->speed_x = speed_x;}
-void aircraft::setSpeedY(float speed_y){this->speed_y = speed_y;}
-void aircraft::setSpeedZ(float speed_z){this->speed_z = speed_z;}
-void aircraft::setTime(float time){this->time = time;}
+void aircraft::setID(int id){this->id = id;}
+void aircraft::setX(int x){this->x = x;}
+void aircraft::setY(int y){this->y = y;}
+void aircraft::setZ(int z){this->z = z;}
+void aircraft::setSpeedX(int speed_x){this->speed_x = speed_x;}
+void aircraft::setSpeedY(int speed_y){this->speed_y = speed_y;}
+void aircraft::setSpeedZ(int speed_z){this->speed_z = speed_z;}
+void aircraft::setTime(int time){this->time = time;}
 
 
-/*void aircraft::hit(map<string,float*>& mymap){
-	float list[3] = {this->x,this->y,this->z};
-	mymap.insert(pair<string,float*>(this->id,list));
+/*void aircraft::hit(map<string,int*>& mymap){
+	int list[3] = {this->x,this->y,this->z};
+	mymap.insert(pair<string,int*>(this->id,list));
 }*/
 
 void aircraft::fly() {
-	this->setX(this->x+this->speed_x);
-	this->setY(this->y + this->speed_y);
-	this->setZ(this->z + this->speed_z);
-
+	this->x += this->speed_x;
+	this->y += this->speed_y;
+	this->z += this->speed_z;
 }
-
-bool aircraft::activated(float clock){
-	return clock>=this->time;
-}
-
-
 aircraft::~aircraft()
 {
 }

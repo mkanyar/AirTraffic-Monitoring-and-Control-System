@@ -68,7 +68,7 @@ void radar::printHitList(){
 //narrow down hit_list to active_list that are within airspace
 void radar::checkActive(int time){
 	for (unsigned int i = 0; i< hit_list.size(); i++){
-		if (hit_list[i].getTime() <= time && hit_list[i].getID() != "-1"){
+		if (hit_list[i].getTime() <= time && hit_list[i].getID() != -1){
 			if((hit_list[i].getX() >= lowerX && hit_list[i].getX() <= upperX) &&
 				(hit_list[i].getY() >= lowerY && hit_list[i].getY() <= upperY) &&
 				(hit_list[i].getZ() >= lowerZ && hit_list[i].getZ() <= upperZ)){

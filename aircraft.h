@@ -12,7 +12,7 @@ using namespace std;
 class aircraft
 {
 private:
-	//attributes
+
 	string id;
 	int speed_x, speed_y, speed_z, x, y, z, time,old_x,old_y;
 

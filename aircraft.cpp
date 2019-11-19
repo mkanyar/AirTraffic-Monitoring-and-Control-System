@@ -1,5 +1,5 @@
 #include "aircraft.h"
-
+bool GLOBAL_OVAL=false;
 aircraft::aircraft()
 {
 	this->id="";

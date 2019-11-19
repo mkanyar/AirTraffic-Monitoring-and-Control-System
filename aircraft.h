@@ -7,6 +7,7 @@
 #include <fstream>
 #include <vector>
 
+extern bool GLOBAL_OVAL;
 using namespace std;
 class aircraft
 {
@@ -16,14 +17,16 @@ private:
 	int speed_x, speed_y, speed_z, x, y, z, time,old_x,old_y;
 
 
-	static bool GLOBAL oval_bool;
-	bool oval_bool;
-    int count=0;
+
+	bool OVAL_BOOL;
+    int count=1;
 	//-1 id for unknown aircraft
 
 public:
 	//float safe_space[2][3];
 	aircraft();
+	vector<int> origin;
+	float x_origin,y_origin;
 	aircraft(string,float,float,float,float,float,float,float);
 	virtual ~aircraft();
 
@@ -50,13 +53,20 @@ public:
 	void setTime(float time);
 	bool activated(float clock);
 
+
+	//for the oval function we assume the radius is 1 and the origin is at 90 degrees.
 	void oval(){
-		old_x=x;
-		old_y=y;
 
-	bool backTotheOrigin=false;
-	if(!backTotheOrigin){
+		if(count == 1)
+		{
+			old_x=this->x;
+			old_y=this->y;
+			x_origin=this->x;
+			y_origin=this->y-1;
+			origin.push_back(x_origin);
+			origin.push_back(y_origin);
 
+		}
 				if ((count%4)==0){
 					this->x+=0;
 					this->y+=0;
@@ -64,28 +74,27 @@ public:
 				}
 
 				if ((count%4)==1){
-					this->x+=1;
+					this->x-=1;
 					this->y+=-1;
 					count+=1;
 							}
 				if ((count%4)==2){
-					this->x+=-1;
-					this->y+=-1;
+					this->x+=1;
+					this->y+=1;
 					count+=1;
+
 							}
 				if ((count%4)==3){
 					this->x+=-1;
 					this->y+=1;
-                    backTotheOrigin=true;
+                    count+=1;
+
 							}
-	}
-	else{
-				this->x=old_x;
-				this->y=old_y;
-
-		}
 
 	}
+
+
+
 	//void hit(map<string,float*>&);
 	void fly();
 

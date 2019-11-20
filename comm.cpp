@@ -18,6 +18,7 @@ using namespace std;
 //   	speed_z=z;
 //   	}
 
+
    	void comm::receiveMessage(vector <string> tokens){
    		string TaskNumber = tokens[0];
    		stringstream transform(TaskNumber);

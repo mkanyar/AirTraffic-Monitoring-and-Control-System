@@ -19,10 +19,10 @@ aircraft::aircraft(int id, int speed_x, int speed_y, int speed_z, int x, int y, 
 {
 	this->OVAL=false;
 	this->id = id;
-	this->speed_x = speed_x;
+	this->speed_x = speed_x*5280;
 	this->speed_y = speed_y;
 	this->speed_z = speed_z;
-	this->x = x;
+	this->x = x*5280;
 	this->y = y;
 	this->z = z;
 	this->time = time;

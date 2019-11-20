@@ -5,8 +5,7 @@
 #include "aircraft.h"
 
 
-class radar : public trackfile
-{
+class radar : public trackfile{
 private:
 
 	//list of hits

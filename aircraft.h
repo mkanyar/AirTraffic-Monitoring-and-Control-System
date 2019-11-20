@@ -18,12 +18,13 @@ using namespace std;
 class aircraft
 {
 private:
-	//attributes
-	int id, speed_x, speed_y, speed_z, x, y, z, time;
+
     int count=1;
 	//-1 id for unknown aircraft
 
 public:
+    //attributes
+    int id, speed_x, speed_y, speed_z, x, y, z, time;
 	bool OVAL;
 	int old_x,old_y;
 	vector<int> origin;

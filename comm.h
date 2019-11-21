@@ -24,6 +24,8 @@ public:
 
     void receiveMessage(vector <string> tokens);
 
+    void requester(string id, int x, int y, int z);
+
 
 
 

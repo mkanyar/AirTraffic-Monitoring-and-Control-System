@@ -202,6 +202,33 @@ using namespace std;
    		}
    	}
 
+    void receiveMessage(vector <string> tokens);
+
+    void comm::requester(string id, int x, int y, int z){
+
+    	int IntId;
+       	stringstream integerID(id);
+       	integerID >> IntId;
+
+       	for(int i = 0; i < airplanes.size(); i++){
+       		stringstream transformID(airplanes[i].getID());
+       		int currentID;
+       		transformID >> currentID;
+       		if(currentID == IntId) {
+       			//Ask the plane to set the speed coordinates using the methods built in it
+       			int speedNeededx = abs(airplanes[i].getX()-x);
+       			airplanes[i].setSpeedX(speedNeededx + airplanes[i].getSpeedX());
+
+       			int speedNeededy = abs(airplanes[i].getY()-y);
+       			airplanes[i].setSpeedY(speedNeededy + airplanes[i].getSpeedY());
+
+       			int speedNeededz = abs(airplanes[i].getZ()-z);
+       			airplanes[i].setSpeedZ(speedNeededz + airplanes[i].getSpeedZ());
+       			break;
+       		}
+       	}
+       }
+
 comm::comm(vector <aircraft> CollectedPlanes)
 {
 	airplanes = CollectedPlanes;

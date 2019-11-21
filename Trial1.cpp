@@ -7,7 +7,6 @@
 #include <ctype.h>
 #include <sched.h>
 #include <time.h>
-#include <iostream>
 #include <fstream>
 #include <chrono>
 #include "ATC.h"

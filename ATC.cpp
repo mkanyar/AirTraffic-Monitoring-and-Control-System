@@ -6,6 +6,7 @@
  */
 
 #include "ATC.h"
+#include "comm.h"
 #include <chrono>
 int GLOBAL_CLOCK=0;
 vector<aircraft> airspace;
@@ -27,7 +28,7 @@ void* ATC::Collision_detection(void* arg){
 		for(unsigned int j =0;j<airspace.size();j++){
 			if(i!=j){
 				if(collision(airspace[i],airspace[j]))
-					collision_message+="Collision happen with "+to_string(airspace[i].getID())+" and "+to_string(airspace[j].getID())+"\n";
+					collision_message+="Collision happened with "+to_string(airspace[i].getID())+" and "+to_string(airspace[j].getID())+"\n";
 			}
 		}
 	}
@@ -36,6 +37,18 @@ void* ATC::Collision_detection(void* arg){
 	cout << "Time to sleep "<<15000000-(chrono::duration_cast<chrono::milliseconds>(end - start).count())<<endl;
 	usleep(15000000-(chrono::duration_cast<chrono::microseconds>(end - start).count()));
 	}
+}
+
+void ATC::Collision_handling(void* arg){
+
+	//Find appropriate x,y,z for the plane.
+
+
+
+	//Try different coordinates for aircraft.
+	//After finding good coordinates, send them as an 'Aircraft' unit to comm and specify id, and all other details in it.
+	//Comm will ask the plane to change its coordinates to this one's.
+
 }
 
 ATC::~ATC() {

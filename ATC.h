@@ -36,7 +36,7 @@ private:
 				cout << "case z"<<endl;
 				bufferString+="We are at time ";
 				bufferString+=to_string(a.getTime())+" and the aircrafts are going to collide at "+to_string(a.time+GLOBAL_CLOCK)+"\n";
-				return true;
+				return true;// Not true if the the centers of the circles are more than 5 miles apart
 			}
            //multiply the feet by 5280 to convert in miles
 			return sqrt(pow(vector_x,2)+pow(vector_y,2))<5*5280;
@@ -47,7 +47,7 @@ private:
 				bufferString+="We are at time ";
 				bufferString+=to_string(a.getTime()) + " and the aircrafts are going to collide at "+to_string(a.time+GLOBAL_CLOCK)+"\n";
 			return true;
-			}
+			}//this should be checked for 5 seconds
 			float vector_x = (float)(a.origin[0]-b.origin[0]);
 			float vector_y = (float)(a.origin[1]-b.origin[1]);
 			return sqrt(pow(vector_x,2)+pow(vector_y,2))<5*5280;
@@ -77,14 +77,15 @@ private:
 			bufferString+="We are at time ";
 			bufferString+=to_string(b.getTime()) + " and the aircrafts are going to collide at "+to_string(b.time+GLOBAL_CLOCK)+"\n";
 			return false;
-
 	}
+
 
 public:
 
 	ATC();
 	ATC(vector<aircraft> aircraftlist);
 	static void* Collision_detection(void*);
+	void Collision_handling(void*);
 	virtual ~ATC();
 
 

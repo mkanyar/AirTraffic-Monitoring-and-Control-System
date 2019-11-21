@@ -9,16 +9,18 @@
 #define TRACKFILE_H_
 
 #include "aircraft.h"
+extern vector<aircraft*> airspace;
+extern vector<aircraft*> entered_list;
+extern vector<aircraft*> GLOBAL_AIRCRAFT_LIST;
 
 extern "C" void write_file_thread();
-extern string bufferString;
+
 /*
 The track file is the major data structure used by several processes to store current position, time-stamped previous positions,
 velocity and identification for each aircraft in the space.
 */
 
-class trackfile : public aircraft
-{
+class trackfile{
 
 private:
 	//current position

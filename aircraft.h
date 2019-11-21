@@ -12,9 +12,12 @@
 #include <time.h>
 #include <stdio.h>
 #include <unistd.h>
+using namespace std;
 
 extern bool GLOBAL_OVAL;
-using namespace std;
+extern int GLOBAL_CLOCK;
+extern string bufferString;
+extern pthread_mutex_t mutex1;
 class aircraft
 {
 private:
@@ -25,12 +28,12 @@ private:
 
 public:
 	bool OVAL;
+	bool entered;
 	int old_x,old_y;
 	vector<int> origin;
 	aircraft();
 	aircraft(int,int,int,int,int,int,int,int);
 	virtual ~aircraft();
-
 	//getters & setters
 	int getID();
 	int getX();
@@ -49,26 +52,9 @@ public:
 	void setSpeedY(int speed_y);
 	void setSpeedZ(int speed_z);
 	void setTime(int time);
-	bool activated(int GLOBAL_CLOCK){
-		if(!GLOBAL_CLOCK || !this->OVAL)
-		{
+	bool activate(string&);
 
-			count = 1;
-		}
-		return GLOBAL_CLOCK>=this->time;
-	}
-	void setID(string id);
-	void setX(float x);
-	void setY(float y);
-	void setZ(float z);
-	void setSpeedX(float speed_x);
-	void setSpeedY(float speed_y);
-	void setSpeedZ(float speed_z);
-	void setTime(float time);
-	bool activated(float clock);
-
-
-	//for the oval function we assume the radius is 1 and the origin is at 90 degrees.
+	//for the oval function we assume the radius is 1 and the origin is at -90 degrees.
 	void oval(){
 
 		if(count == 1)
@@ -101,7 +87,7 @@ public:
 					this->y+=1;
                     count+=1;
 
-							}
+				}
 
 	}
 	//void hit(map<string,int*>&);

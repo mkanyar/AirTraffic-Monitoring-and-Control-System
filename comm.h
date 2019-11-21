@@ -24,6 +24,9 @@ public:
 
     void receiveMessage(vector <string> tokens);
 
+    void deletePlane(int ID);
+
+    void hitScan(vector <aircraft> hitlist);
 
 
 	//reporting aircraft leaving airspace (sporadic)

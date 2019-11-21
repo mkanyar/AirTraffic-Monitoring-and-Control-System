@@ -1,7 +1,13 @@
 #include "aircraft.h"
+#include "ATC.h"
 bool GLOBAL_OVAL=false;
+int GLOBAL_CLOCK=0;
+string bufferString="";
+pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
+
 aircraft::aircraft()
 {
+	this->entered=false;
 	this->old_x=0;
 	this->old_y=0;
 	this->OVAL=false;
@@ -17,6 +23,7 @@ aircraft::aircraft()
 
 aircraft::aircraft(int id, int speed_x, int speed_y, int speed_z, int x, int y, int z, int time)
 {
+	this->entered=false;
 	this->OVAL=false;
 	this->id = id;
 	this->speed_x = speed_x;
@@ -49,22 +56,27 @@ void aircraft::setSpeedZ(int speed_z){this->speed_z = speed_z;}
 void aircraft::setTime(int time){this->time = time;}
 
 
-/*void aircraft::hit(map<string,int*>& mymap){
-	int list[3] = {this->x,this->y,this->z};
-	mymap.insert(pair<string,int*>(this->id,list));
-}*/
-
 void aircraft::fly() {
 	this->x += this->speed_x;
 	this->y += this->speed_y;
 	this->z += this->speed_z;
 }
+
+bool aircraft::activate(string& bufferString){
+	if(GLOBAL_CLOCK>=this->time && !entered){
+		entered=true;
+		bufferString+=to_string(GLOBAL_CLOCK)+",aircraft "+to_string(this->id)+" is operating.\n";
+	}
+	if(!GLOBAL_CLOCK || !this->OVAL)
+	{
+		count = 1;
+		origin.clear();
+	}
+
+	return GLOBAL_CLOCK>=this->time;
+}
+
 aircraft::~aircraft(){
 
 }
 
-
-/*aircraft::~aircraft()
->>>>>>> f490360ad390ef7b919990c67e6c1a641c4df718
-{
-}*/

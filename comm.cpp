@@ -18,6 +18,7 @@ using namespace std;
 //   	speed_z=z;
 //   	}
 
+//operator commands only
    	void comm::receiveMessage(vector <string> tokens){
    		string TaskNumber = tokens[0];
    		stringstream transform(TaskNumber);
@@ -71,12 +72,12 @@ using namespace std;
    			ID = T1;
    			givenAltitude = T2;
 
-   			for(int i = 0; i < airplanes.size(); i++){
-   				stringstream transformID(airplanes[i].getID());
+   			for(int i = 0; i < airspace.size(); i++){
+   				stringstream transformID(airspace[i]->getID());
    				int currentID;
    				transformID >> currentID;
    				if(currentID == ID) {
-   					airplanes[i].setZ(givenAltitude);
+   					airspace[i]->setZ(givenAltitude);
    					bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(ID) + " now has altitude equal to " + to_string(givenAltitude) + "\n";
    				}
    			}
@@ -88,14 +89,14 @@ using namespace std;
    			z = T4;
    			int currentID;
 
-   			for(int i = 0; i < airplanes.size(); i++){
-   				stringstream transformID(airplanes[i].getID());
+   			for(int i = 0; i < airspace.size(); i++){
+   				stringstream transformID(airspace[i]->getID());
    				int currentID;
    				transformID >> currentID;
    				if(currentID == ID) {
-   					airplanes[i].setSpeedX(x);
-   					airplanes[i].setSpeedY(y);
-   					airplanes[i].setSpeedZ(z);
+   					airspace[i]->setSpeedX(x);
+   					airspace[i]->setSpeedY(y);
+   					airspace[i]->setSpeedZ(z);
    					bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(ID) + " now has velocity equal to: (Vx,Vy,Vz) = ("+to_string(T2)+","+to_string(T3)+","+to_string(T4)+")\n";
    				}
    			}
@@ -105,13 +106,13 @@ using namespace std;
    			x = T2;
    			y = T3;
 
-   			for(int i = 0; i < airplanes.size(); i++){
-   				stringstream transformID(airplanes[i].getID());
+   			for(int i = 0; i < airspace.size(); i++){
+   				stringstream transformID(airspace[i]->getID());
    				int currentID;
    				transformID >> currentID;
    				if(currentID == ID) {
-   					airplanes[i].setX(x);
-   					airplanes[i].setY(y);
+   					airspace[i]->setX(x);
+   					airspace[i]->setY(y);
    					bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(ID) + " is now pointed towards (x,y) = ("+to_string(T2)+","+to_string(T3)+")\n";
    				}
    			}
@@ -120,17 +121,17 @@ using namespace std;
    		else if(TaskNumberInt == 4){
    			ID = T1;
    			ovalORholding = T2;
-   			for(int i = 0; i < airplanes.size(); i++){
-   				stringstream transformID(airplanes[i].getID());
+   			for(int i = 0; i < airspace.size(); i++){
+   				stringstream transformID(airspace[i]->getID());
    				int currentID;
    				transformID >> currentID;
    				if(currentID == ID) {
    					if(ovalORholding == 0){
-   						airplanes[i].OVAL = true;
+   						airspace[i]->OVAL = true;
    						bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(ID) + " entered OVAL state \n";
    					}
    					else{
-   						airplanes[i].OVAL = false;
+   						airspace[i]->OVAL = false;
    						bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(ID) + " entered HOLDING state\n";
    					}
    				}
@@ -141,31 +142,31 @@ using namespace std;
    		else if(TaskNumberInt == 5){
    			ID = T1;
 
-   			for(int i = 0; i < airplanes.size(); i++){
-   				stringstream transformID(airplanes[i].getID());
+   			for(int i = 0; i < airspace.size(); i++){
+   				stringstream transformID(airspace[i]->getID());
    				int currentID;
    				transformID >> currentID;
    				if(currentID == ID) {
-   					airplanes[i].OVAL = false;
+   					airspace[i]->OVAL = false;
    					bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(ID) + " left its pattern \n";
    				}
    			}
    		}
    		else if(TaskNumberInt == 6){
    			ID = T1;
-   			for(int i = 0; i < airplanes.size(); i++){
-   				stringstream transformID(airplanes[i].getID());
+   			for(int i = 0; i < airspace.size(); i++){
+   				stringstream transformID(airspace[i]->getID());
    				int currentID;
    				transformID >> currentID;
    				if(currentID == ID) {
    					cout << "Aircraft ID:" + ID << endl;
-   					cout << "Entry Time: " + to_string(airplanes[i].getTime())<< endl;
-   					cout << "x-coordinate: " + to_string(airplanes[i].getX()) << endl;
-   					cout << "y-coordinate: " + to_string(airplanes[i].getY()) << endl;
-   					cout << "z-coordinate: " + to_string(airplanes[i].getZ()) << endl;
-   					cout << "x-speed: " + to_string(airplanes[i].getSpeedX()) << endl;
-   					cout << "y-speed: " + to_string(airplanes[i].getSpeedY()) << endl;
-   					cout << "z-speed: " + to_string(airplanes[i].getSpeedZ()) << endl;
+   					cout << "Entry Time: " + to_string(airspace[i]->getTime())<< endl;
+   					cout << "x-coordinate: " + to_string(airspace[i]->getX()) << endl;
+   					cout << "y-coordinate: " + to_string(airspace[i]->getY()) << endl;
+   					cout << "z-coordinate: " + to_string(airspace[i]->getZ()) << endl;
+   					cout << "x-speed: " + to_string(airspace[i]->getSpeedX()) << endl;
+   					cout << "y-speed: " + to_string(airspace[i]->getSpeedY()) << endl;
+   					cout << "z-speed: " + to_string(airspace[i]->getSpeedZ()) << endl;
    					bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(ID) + " status acquired \n";
    				}
    			}
@@ -187,23 +188,65 @@ using namespace std;
    			bufferString+= to_string(GLOBAL_CLOCK) + "All aircrafts left their patterns\n";
    		}
    		else{
-   			for(int i = 0; i < airplanes.size(); i++){
+   			for(int i = 0; i < airspace.size(); i++){
    				cout << "Aircraft ID:" + ID << endl;
-   				cout << "Entry Time: " + to_string(airplanes[i].getTime())<< endl;
-   				cout << "x-coordinate: " + to_string(airplanes[i].getX()) << endl;
-   				cout << "y-coordinate: " + to_string(airplanes[i].getY()) << endl;
-   				cout << "z-coordinate: " + to_string(airplanes[i].getZ()) << endl;
-   				cout << "x-speed: " + to_string(airplanes[i].getSpeedX()) << endl;
-   				cout << "y-speed: " + to_string(airplanes[i].getSpeedY()) << endl;
-   				cout << "z-speed: " + to_string(airplanes[i].getSpeedZ()) << endl;
+   				cout << "Entry Time: " + to_string(airspace[i]->getTime())<< endl;
+   				cout << "x-coordinate: " + to_string(airspace[i]->getX()) << endl;
+   				cout << "y-coordinate: " + to_string(airspace[i]->getY()) << endl;
+   				cout << "z-coordinate: " + to_string(airspace[i]->getZ()) << endl;
+   				cout << "x-speed: " + to_string(airspace[i]->getSpeedX()) << endl;
+   				cout << "y-speed: " + to_string(airspace[i]->getSpeedY()) << endl;
+   				cout << "z-speed: " + to_string(airspace[i]->getSpeedZ()) << endl;
    				bufferString+= to_string(GLOBAL_CLOCK) + " All aircrafts' statuses acquired \n";
    			}
    		}
    	}
 
-comm::comm(vector <aircraft> CollectedPlanes)
+
+   	void comm::deletePlane(int ID){
+   		for(int i = 0; i < airspace.size(); i++){
+   			stringstream transformID(airspace[i]->getID());
+   			int currentID;
+   			transformID >> currentID;
+   			if(currentID == ID) {
+   				bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(ID) + " left airspace \n";
+   				airspace.erase(airspace.begin()+i);
+   				break;
+   			}
+   		}
+   	}
+
+   	void comm::hitScan(vector <aircraft> hitlist){
+   		for(int i = 0; i < airspace.size(); i++){
+   			stringstream transformID1(airspace[i]->getID());
+   			int planeID;
+   			transformID1 >> planeID;
+
+   			bool found = false;
+
+   			for(int j = 0; j < hitlist.size(); j++){
+   				stringstream transformID2(hitlist[j].getID());
+   				int hitlistID;
+   				transformID2 >> hitlistID;
+   				if(planeID == hitlistID) {
+   					found = true;
+   					break;
+   				}
+   			}
+   			if(!found){
+   				bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(planeID) + " left airspace, no hit on it \n";
+   			}
+   		}
+
+   		//airspace = hitlist;
+
+   		bufferString+= to_string(GLOBAL_CLOCK) + " Hit list processed. \n";
+   	}
+
+
+
+comm::comm()
 {
-	airplanes = CollectedPlanes;
 }
 
 comm::~comm()

@@ -12,13 +12,13 @@
 #include <chrono>
 #include "ATC.h"
 #include "TestCase.h"
+#include "trackfile.h"
+#include "radar.h"
+
 using namespace std;
 extern "C" void displaye_manager_thread();
 extern "C" void write_file_thread();
-extern "C" void display_manager_c();
-
-pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
-int global_clock = 0;
+extern "C" void display_manager_c_thread();
 
 void time_stamp(){
 	time_t t = time(0);   // get time now
@@ -45,6 +45,32 @@ void* Tokenizer(string message){
 	if(!tokens.empty()){
 		//This is a method for 'comm' that will be used when we initialize it.
 		//receiveMessage(tokens);
+	}
+}
+
+void* display_manager_c_thread(void* par){
+	int n;
+	char* token;
+	unsigned int line=0;
+	vector<string> string_list;
+
+	while(true){
+		auto start = std::chrono::system_clock::now();
+		n = bufferString.length();
+		char tokens[n+1];
+		strcpy(tokens, bufferString.c_str());
+		token = strtok(tokens,"\n");
+		//cout<<token<<endl;
+		while (token != NULL){
+			string_list.push_back(token);
+			token = strtok (NULL, "\n");
+		}
+		for(;line<string_list.size();line++){
+			cout<<string_list[line]<<endl;
+		}
+		string_list.clear();
+		auto end = std::chrono::system_clock::now();
+		usleep(5000000-(chrono::duration_cast<chrono::microseconds>(end - start).count()));
 	}
 }
 
@@ -154,8 +180,8 @@ void* write_file_thread(void* mys){
 	fclose(pFile2);
 	//cout << s <<endl;
 	i--;
-	global_clock++;
-	cout << global_clock<<" Finish writing."<<endl;
+	//GLOBAL_CLOCK++;
+
 	pthread_mutex_unlock( &mutex1 );
 	sleep(4);
 	}
@@ -169,8 +195,6 @@ void* displaye_manager_thread(void* rl){
 
 	//Mutex lock
 	while(pthread_mutex_lock( &mutex1 )!=0);
-	cout << global_clock<< " Got clock"<<endl;
-	cout << global_clock<<" start reading"<<endl;
 	FILE* fp = fopen("Tracker.txt", "r");
 		if (fp == NULL)
 		    exit(EXIT_FAILURE);
@@ -185,8 +209,7 @@ void* displaye_manager_thread(void* rl){
 		}
 		fclose(fp);
 	i--;
-	global_clock++;
-	cout << global_clock<<" finish reading line number"<<read_line<<endl;
+
 	pthread_mutex_unlock(&mutex1);
 	actual_line=0;
 	sleep(5);
@@ -194,45 +217,47 @@ void* displaye_manager_thread(void* rl){
 	return(0);
 }
 
-void display_manager_c(){
-	FILE* fp = fopen("Tracker.txt", "r");
-	if (fp == NULL)
-	    exit(EXIT_FAILURE);
-	char string[100];
-	while(fgets(string, 100, fp)) {
-	    cout<<string;
-	}
-	fclose(fp);
-}
+//void display_manager_c(){
+//	FILE* fp = fopen("Tracker.txt", "r");
+//	if (fp == NULL)
+//	    exit(EXIT_FAILURE);
+//	char string[100];
+//	while(fgets(string, 100, fp)) {
+//	    cout<<string;
+//	}
+//	fclose(fp);
+//}
 
 void* flying_aircrafts(void* arg){
-
 	while(true){
 	//cout<<GLOBAL_CLOCK<<endl;
 	GLOBAL_CLOCK++;
-	for(unsigned int i =0;i<airspace.size();i++){
-		if(airspace[i].activated(GLOBAL_CLOCK) && !airspace[i].OVAL && !GLOBAL_OVAL)
+//	for(unsigned int i =0;i<GLOBAL_AIRCRAFT_LIST.size();i++){
+//		if(GLOBAL_AIRCRAFT_LIST[i]->activate(bufferString)){
+//			entered_list.push_back(GLOBAL_AIRCRAFT_LIST[i]);
+//		}
+//	}
+	radar::populateEntered();
+	for(unsigned int i =0;i<entered_list.size();i++){
+		if(!entered_list[i]->OVAL && !GLOBAL_OVAL)
 		{
 			//cout<<"entering normal fly mode"<<endl;
-			airspace[i].fly();
+			entered_list[i]->fly();
 		}
-		else if(airspace[i].activated(GLOBAL_CLOCK) && (airspace[i].OVAL||GLOBAL_OVAL))
+		else if(entered_list[i]->activate(bufferString) && (entered_list[i]->OVAL||GLOBAL_OVAL))
 		{
 			//cout<<"entring oval fly mode"<<endl;
-			airspace[i].oval();
+			entered_list[i]->oval();
 		}
 	}
 	sleep(1);
 	}
+
+
+	//}
 }
 
-void* console_in(void* arg){
-	string choice;
-	while(true){
-		cin>>choice;
-		Operator_Commands(NULL);
-	}
-}
+
 
 template<typename T>
 pthread_t createSchedFifoThread(void* (*pThreadFunc)(void*), int priority, int schedpolicy, T parameter,bool b_detached = false)
@@ -254,26 +279,47 @@ pthread_t createSchedFifoThread(void* (*pThreadFunc)(void*), int priority, int s
     return tid;
 }
 
+void* console_in(void* arg){
+	string choice;
+	pthread_t tid1;
+	while(true){
+		cin>>choice;
+		tid1 = createSchedFifoThread(console_in, 98, SCHED_SPORADIC , NULL,false);
+		//Operator_Commands(NULL);
+		pthread_join(tid1,NULL);
+	}
+}
+
 int main() {
+
+
 		GLOBAL_CLOCK=0;
-		TestCase tc();
-		cout << "Welcome to the ATC System" << endl;
-		//vector<aircraft> airspace;
-		for(unsigned int i=0;i<5;i++){
-			airspace.push_back(aircraft(i,1,1,1,1,1,1,0));
+		int len = sizeof(TestCase::airplane_schedule)/sizeof(TestCase::airplane_schedule[0]);
+		for(int i =0;i<len;i+=8){
+			int id = TestCase::airplane_schedule[i];
+			int speed_x = TestCase::airplane_schedule[i+1];
+			int speed_y = TestCase::airplane_schedule[i+2];
+			int speed_z = TestCase::airplane_schedule[i+3];
+			int x = TestCase::airplane_schedule[i+4];
+			int y = TestCase::airplane_schedule[i+5];
+			int z = TestCase::airplane_schedule[i+6];
+			int time = TestCase::airplane_schedule[i+7];
+			GLOBAL_AIRCRAFT_LIST.push_back(new aircraft(id,speed_x,speed_y,speed_z,x,y,z,time));
 		}
+		cout << "Welcome to the ATC System" << endl;
+		radar rd();
 		ATC atc(airspace);
 		//pthread_t tid1;
-		pthread_t tid1, tid2,tid3;
-		tid1 = createSchedFifoThread(flying_aircrafts, 99, SCHED_RR, airspace,false);
-		tid2 = createSchedFifoThread(console_in, 98, SCHED_RR, NULL,false);
-//		tid3 = createSchedFifoThread(Operator_Commands, 98, SCHED_RR, NULL,false);
-
-//		pthread_join(tid2,NULL);
-//		pthread_join(tid3,NULL);
-
-		cout<<"main"<<endl;
+		pthread_t tid1, tid2,tid3,tid4,tid5;
+		tid1 = createSchedFifoThread(flying_aircrafts, 99, SCHED_FIFO , airspace,false);
+		tid2 = createSchedFifoThread(display_manager_c_thread, 50, SCHED_RR  , NULL,false);
+		tid3 = createSchedFifoThread(atc.Collision_detection,98,SCHED_RR,NULL,false);
+		tid4 = createSchedFifoThread(radar::populateAirspace,98,SCHED_RR,NULL,false);
+		tid5 = createSchedFifoThread(radar::populateBuffer,50,SCHED_RR,NULL,false);
+		pthread_join(tid3,NULL);
 		pthread_join(tid1,NULL);
+		pthread_join(tid2,NULL);
+		pthread_join(tid4,NULL);
 //		auto start = std::chrono::system_clock::now();
 //		cout << atc.Collision_detection()<<endl;
 //		auto end = std::chrono::system_clock::now();

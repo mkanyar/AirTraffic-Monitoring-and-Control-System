@@ -10,6 +10,12 @@
 
 #include "aircraft.h"
 
+//list of hits
+extern vector<aircraft*> GLOBAL_AIRCRAFT_LIST;
+//sublist of active hits (within airspace)
+extern vector<aircraft*> airspace;
+//sublist of aircrafts with entryTime > globalClock
+extern vector<aircraft*> entered_list;
 extern "C" void write_file_thread();
 
 /*

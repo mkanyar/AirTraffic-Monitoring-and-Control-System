@@ -6,9 +6,15 @@
  */
 
 #include "trackfile.h"
+#include "aircraft.h"
 
 //extern string from radar.h
-string bufferString;
+string bufferString = "";
+
+vector<aircraft*> GLOBAL_AIRCRAFT_LIST;
+vector<aircraft*> airspace;
+vector<aircraft*> entered_list;
+
 
 trackfile::trackfile() {
 	this->ac_position.setID(0);

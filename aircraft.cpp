@@ -1,5 +1,10 @@
 #include "aircraft.h"
 
+bool GLOBAL_OVAL = false;
+int GLOBAL_CLOCK = 0;
+string bufferString = "";
+pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
+
 aircraft::aircraft()
 {
 	this->id=0;

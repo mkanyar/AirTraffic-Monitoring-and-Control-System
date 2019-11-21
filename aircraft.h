@@ -15,6 +15,11 @@
 
 using namespace std;
 
+extern bool GLOBAL_OVAL;
+extern int GLOBAL_CLOCK;
+extern string bufferString;
+extern pthread_mutex_t mutex1;
+
 class aircraft
 {
 private:
@@ -29,21 +34,21 @@ public:
 
 	//getters & setters
 	int getID();
-	int getX();
-	int getY();
-	int getZ();
 	int getSpeedX();
 	int getSpeedY();
 	int getSpeedZ();
+	int getX();
+	int getY();
+	int getZ();
 	int getTime();
 
 	void setID(int id);
-	void setX(int x);
-	void setY(int y);
-	void setZ(int z);
 	void setSpeedX(int speed_x);
 	void setSpeedY(int speed_y);
 	void setSpeedZ(int speed_z);
+	void setX(int x);
+	void setY(int y);
+	void setZ(int z);
 	void setTime(int time);
 
 	//void hit(map<string,int*>&);

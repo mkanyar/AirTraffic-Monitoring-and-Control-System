@@ -1,36 +1,34 @@
 #ifndef COMM_H_
 #define COMM_H_
 #include <iostream>
-#include <string>
+#include <strings.h>
+#include <vector>
+#include <stdio.h>
+#include <sstream>
+#include "ATC.h"
+#include "radar.h"
+#include "aircraft.h"
 
 using namespace std;
 class comm
-{private:
-    string ID;
+{protected:
 
-
-
-	float speed_x, speed_y, speed_z, x, y, z, entry_time;
-
+    vector <aircraft> airplanes;
 
 public:
 	comm();
    ~comm();
-  comm(string,float,float,float,float,float,float,float);
+  comm(vector<aircraft>);
 
     string getID();
-    float getX();
-   	float getY();
-   	float getZ();
-   	float getSpeedX();
-   	float getSpeedY();
-   	float getSpeedZ();
-   	float getEntryTime();
-   	void changeSpeed(float,float,float);
-   	void getPlaneStatus(int);
 
+    void receiveMessage(vector <string> tokens);
 
+    void requester(string id, int x, int y, int z);
 
+    void deletePlane(int ID);
+
+    void hitScan(vector <aircraft> hitlist);
 
 
 

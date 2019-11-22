@@ -85,7 +85,7 @@ public:
 	ATC();
 	ATC(vector<aircraft> aircraftlist);
 	static void* Collision_detection(void*);
-	void Collision_handling(void*);
+	static void Collision_handling(aircraft a1, aircraft a2);
 	virtual ~ATC();
 
 

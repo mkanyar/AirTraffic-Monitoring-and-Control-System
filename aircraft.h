@@ -17,7 +17,7 @@ using namespace std;
 extern bool GLOBAL_OVAL;
 extern int GLOBAL_CLOCK;
 extern string bufferString;
-extern pthread_mutex_t mutex1;
+extern pthread_mutex_t buffstr;
 class aircraft
 {
 private:

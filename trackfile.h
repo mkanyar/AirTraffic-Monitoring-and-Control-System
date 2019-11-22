@@ -43,7 +43,7 @@ public:
 	aircraft getCurrentPosition();
 	vector<aircraft> getPreviousPositions();
 
-	void* write_file_thread(void*);
+	static void* write_file_thread(void*);
 
 	virtual ~trackfile();
 };

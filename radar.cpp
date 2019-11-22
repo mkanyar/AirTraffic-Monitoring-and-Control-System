@@ -78,6 +78,7 @@ void radar::printAll(){
 }
 
 void radar::populateEntered (){
+	//every second
 	for (unsigned int i = 0; i < GLOBAL_AIRCRAFT_LIST.size(); i++){
 		if (GLOBAL_AIRCRAFT_LIST[i]->activate(bufferString) && std::find(entered_list.begin(), entered_list.end(), GLOBAL_AIRCRAFT_LIST[i])==entered_list.end()){
 			//hit_list.erase(hit_list.begin() + i);
@@ -98,7 +99,9 @@ void* radar::populateAirspace(void* arg){
 
 				//entered_list.erase(entered_list.begin() + i);
 				airspace.push_back(entered_list[i]);
+				while(pthread_mutex_lock( &buffstr )!=0);
 				bufferString+=to_string(GLOBAL_CLOCK)+",aircraft "+to_string(entered_list[i]->getID())+" enters into airspace.\n";
+				pthread_mutex_unlock( &buffstr );
 			}
 		}
 		auto end =  std::chrono::system_clock::now();
@@ -122,7 +125,9 @@ void* radar::populateBuffer(void* arg){
 					<< airspace[i]->getZ() << ","
 					<<  "\n";
 		}
+		while(pthread_mutex_lock( &buffstr )!=0);
 		bufferString += ss.str();
+		pthread_mutex_unlock( &buffstr );
 		auto end =  std::chrono::system_clock::now();
 		//cout << "Execution time is  "<<(chrono::duration_cast<chrono::milliseconds>(end - start).count())<<endl;
 		usleep(5000000-(chrono::duration_cast<chrono::microseconds>(end - start).count()));

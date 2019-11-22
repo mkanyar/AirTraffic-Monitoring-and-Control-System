@@ -34,7 +34,9 @@ private:
 			if(sqrt(pow(vector_x,2)+pow(vector_y,2))<(3*5280) && abs(atempz-btempz)<1000)
 			{
 				//add to  a message such that communication can do something
+				while(pthread_mutex_lock( &buffstr )!=0);
 				bufferString+=to_string(GLOBAL_CLOCK)+", aircraft id "+to_string(a->getID())+" and aircraft id "+to_string(b->getID())+" have collision at "+to_string(GLOBAL_CLOCK+i)+".\n";
+				pthread_mutex_unlock( &buffstr );
 				return true;
 			}
 			atempx=a->getX()+a->getSpeedX();

@@ -75,12 +75,14 @@ void trackfile::newCurrentPosition(int id, int speed_x, int speed_y, int speed_z
 }
 
 void* trackfile::write_file_thread(void* mys){
-	int i = 5;
+	//int i = 5;
 	const char* s;
-	while(i>0){
+	while(true){
 	//while(pthread_mutex_lock( &mutex1 )!=0);
 	//cout << global_clock<<" Got lock"<<endl;
+	while(pthread_mutex_lock( &buffstr )!=0);
 	s = bufferString.c_str();
+	pthread_mutex_unlock( &buffstr );
 	//cout << global_clock << " Start writing"<<endl;
 	FILE *pFile2;
 
@@ -93,7 +95,6 @@ void* trackfile::write_file_thread(void* mys){
 	}
 	fclose(pFile2);
 	//cout << s <<endl;
-	i--;
 	//global_clock++;
 	//cout << global_clock<<" Finish writing."<<endl;
 	//pthread_mutex_unlock( &mutex1 );

@@ -56,9 +56,11 @@ void* display_manager_c_thread(void* par){
 
 	while(true){
 		auto start = std::chrono::system_clock::now();
+		while(pthread_mutex_lock( &buffstr )!=0);
 		n = bufferString.length();
 		char tokens[n+1];
 		strcpy(tokens, bufferString.c_str());
+		pthread_mutex_unlock( &buffstr );
 		token = strtok(tokens,"\n");
 		//cout<<token<<endl;
 		while (token != NULL){
@@ -164,7 +166,7 @@ void* write_file_thread(void* mys){
 	int i = 5;
 	char* s;
 	while(i>0){
-	while(pthread_mutex_lock( &mutex1 )!=0);
+	//while(pthread_mutex_lock( &mutex1 )!=0);
 	//cout << global_clock<<" Got lock"<<endl;
 	s= {"New string\n"};
 	//cout << global_clock << " Start writing"<<endl;
@@ -182,7 +184,7 @@ void* write_file_thread(void* mys){
 	i--;
 	//GLOBAL_CLOCK++;
 
-	pthread_mutex_unlock( &mutex1 );
+	//pthread_mutex_unlock( &mutex1 );
 	sleep(4);
 	}
 }
@@ -194,7 +196,7 @@ void* displaye_manager_thread(void* rl){
 	while(i>0){
 
 	//Mutex lock
-	while(pthread_mutex_lock( &mutex1 )!=0);
+	//while(pthread_mutex_lock( &mutex1 )!=0);
 	FILE* fp = fopen("Tracker.txt", "r");
 		if (fp == NULL)
 		    exit(EXIT_FAILURE);
@@ -210,7 +212,7 @@ void* displaye_manager_thread(void* rl){
 		fclose(fp);
 	i--;
 
-	pthread_mutex_unlock(&mutex1);
+	//pthread_mutex_unlock(&mutex1);
 	actual_line=0;
 	sleep(5);
 	}
@@ -310,16 +312,19 @@ int main() {
 		radar rd();
 		ATC atc(airspace);
 		//pthread_t tid1;
-		pthread_t tid1, tid2,tid3,tid4,tid5;
+		pthread_t tid1, tid2,tid3,tid4,tid5,tid6;
 		tid1 = createSchedFifoThread(flying_aircrafts, 99, SCHED_FIFO , airspace,false);
 		tid2 = createSchedFifoThread(display_manager_c_thread, 50, SCHED_RR  , NULL,false);
 		tid3 = createSchedFifoThread(atc.Collision_detection,98,SCHED_RR,NULL,false);
 		tid4 = createSchedFifoThread(radar::populateAirspace,98,SCHED_RR,NULL,false);
 		tid5 = createSchedFifoThread(radar::populateBuffer,50,SCHED_RR,NULL,false);
+		tid6 = createSchedFifoThread(trackfile::write_file_thread,50,SCHED_RR,NULL,false);
 		pthread_join(tid3,NULL);
 		pthread_join(tid1,NULL);
 		pthread_join(tid2,NULL);
 		pthread_join(tid4,NULL);
+		pthread_join(tid5,NULL);
+		pthread_join(tid6,NULL);
 //		auto start = std::chrono::system_clock::now();
 //		cout << atc.Collision_detection()<<endl;
 //		auto end = std::chrono::system_clock::now();

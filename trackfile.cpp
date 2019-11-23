@@ -9,7 +9,7 @@
 vector<aircraft*> entered_list;
 vector<aircraft*> airspace;
 vector<aircraft*> GLOBAL_AIRCRAFT_LIST;
-
+unsigned int line = 0;
 trackfile::trackfile() {
 	this->ac_position.setID(0);
 	this->ac_position.setX(0);
@@ -94,6 +94,8 @@ void* trackfile::write_file_thread(void* mys){
 		fprintf(pFile2, "%s", s);
 	}
 	fclose(pFile2);
+	bufferString="";
+	line=0;
 	//cout << s <<endl;
 	//global_clock++;
 	//cout << global_clock<<" Finish writing."<<endl;

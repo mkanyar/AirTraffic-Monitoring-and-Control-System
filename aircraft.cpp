@@ -65,9 +65,12 @@ void aircraft::fly() {
 bool aircraft::activate(string& bufferString){
 	if(GLOBAL_CLOCK>=this->time && !entered){
 		entered=true;
-		while(pthread_mutex_lock( &buffstr )!=0);
-		bufferString+=to_string(GLOBAL_CLOCK)+",aircraft "+to_string(this->id)+" is operating.\n";
-		pthread_mutex_unlock( &buffstr );
+		if(this->getID()!=-1){
+			while(pthread_mutex_lock( &buffstr )!=0);
+			bufferString+=to_string(GLOBAL_CLOCK)+",aircraft "+to_string(this->id)+" is operating.\n";
+			pthread_mutex_unlock( &buffstr );
+		}
+
 	}
 	if(!GLOBAL_CLOCK || !this->OVAL)
 	{

@@ -11,22 +11,22 @@
 
 using namespace std;
 class comm
-{protected:
+{private:
 
-    vector <aircraft> airplanes;
+    //vector <aircraft> airplanes;
 
 public:
 	comm();
    ~comm();
-  comm(vector<aircraft>);
+  //comm(vector<aircraft>);
 
     string getID();
 
-    void receiveMessage(vector <string> tokens);
+    static void receiveMessage(vector <string> tokens);
 
     void deletePlane(int ID);
 
-    void hitScan(vector <aircraft> hitlist);
+    static void hitScan(aircraft* hitobject);
 
 
 	//reporting aircraft leaving airspace (sporadic)

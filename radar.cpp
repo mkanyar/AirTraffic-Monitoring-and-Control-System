@@ -92,21 +92,29 @@ void* radar::populateAirspace(void* arg){
 	while(true){
 		auto start = std::chrono::system_clock::now();
 		//cout << "entered list size -> "<< entered_list.size()<<endl;
+		//vector here
 		for (unsigned int i = 0; i< entered_list.size(); i++){
-			if(std::find(airspace.begin(), airspace.end(), entered_list[i])==airspace.end()&&(entered_list[i]->getX() >= lowerX && entered_list[i]->getX() <= upperX) &&
+			if((entered_list[i]->getX() >= lowerX && entered_list[i]->getX() <= upperX) &&
 					(entered_list[i]->getY() >= lowerY && entered_list[i]->getY() <= upperY) &&
 					(entered_list[i]->getZ() >= lowerZ && entered_list[i]->getZ() <= upperZ)){
-
+				if(std::find(airspace.begin(), airspace.end(), entered_list[i])==airspace.end()){
 				//entered_list.erase(entered_list.begin() + i);
 				airspace.push_back(entered_list[i]);
 				while(pthread_mutex_lock( &buffstr )!=0);
 				bufferString+=to_string(GLOBAL_CLOCK)+",aircraft "+to_string(entered_list[i]->getID())+" enters into airspace.\n";
 				pthread_mutex_unlock( &buffstr );
+				}
+			}
+			else{
+				if(std::find(airspace.begin(), airspace.end(), entered_list[i])!=airspace.end()){
+					comm::hitScan(entered_list[i]);
+				}
 			}
 		}
+
 		auto end =  std::chrono::system_clock::now();
 		//cout << "Execution time is  "<<(chrono::duration_cast<chrono::milliseconds>(end - start).count())<<endl;
-		usleep(5000000-(chrono::duration_cast<chrono::microseconds>(end - start).count()));
+		usleep(15000000-(chrono::duration_cast<chrono::microseconds>(end - start).count()));
 	}
 }
 
@@ -116,14 +124,44 @@ void* radar::populateBuffer(void* arg){
 		auto start = std::chrono::system_clock::now();
 		stringstream ss;
 		for (unsigned int i = 0; i < airspace.size(); i++){
-			ss << GLOBAL_CLOCK << "," << airspace[i]->getID() << ","
-					<< airspace[i]->getSpeedX() << ","
-					<< airspace[i]->getSpeedY() << ","
-					<< airspace[i]->getSpeedZ() << ","
-					<< airspace[i]->getX() << ","
-					<< airspace[i]->getY() << ","
-					<< airspace[i]->getZ() << ","
-					<<  "\n";
+			//unknow
+			if(airspace[i]->getID()==-1){
+				if(fmodf((float)GLOBAL_CLOCK,15.0)==0.0){
+					ss << GLOBAL_CLOCK << "," << airspace[i]->getID() << ","
+														<< airspace[i]->getSpeedX() << ","
+														<< airspace[i]->getSpeedY() << ","
+														<< airspace[i]->getSpeedZ() << ","
+														<< airspace[i]->getX() << ","
+														<< airspace[i]->getY() << ","
+														<< airspace[i]->getZ() << ","
+														<<  "\n";
+				}
+
+			}
+			else{
+//cout <<"BOOL-> "<< to_string() <<endl;
+//				cout << " "<<to_string(!(airspace[i]->getZ()>=lowerZ && airspace[i]->getZ() <= upperZ))<<endl;
+//				cout << airspace[i]->getID()<<" "<<GLOBAL_CLOCK<<endl;
+				if(!((airspace[i]->getX() >= lowerX && airspace[i]->getX() <= upperX)
+						&& (airspace[i]->getY() >= lowerY && airspace[i]->getY() <= upperY)
+						&&(airspace[i]->getZ() >= lowerZ && airspace[i]->getZ() <= upperZ)))
+				{
+					//cout << airspace[i]->getID()<<" "<<GLOBAL_CLOCK<<endl;
+					comm::hitScan(airspace[i]);
+				}
+				else{
+				ss << GLOBAL_CLOCK << "," << airspace[i]->getID() << ","
+													<< airspace[i]->getSpeedX() << ","
+													<< airspace[i]->getSpeedY() << ","
+													<< airspace[i]->getSpeedZ() << ","
+													<< airspace[i]->getX() << ","
+													<< airspace[i]->getY() << ","
+													<< airspace[i]->getZ() << ","
+													<<  "\n";
+				}
+			}
+
+
 		}
 		while(pthread_mutex_lock( &buffstr )!=0);
 		bufferString += ss.str();

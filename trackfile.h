@@ -12,7 +12,7 @@
 extern vector<aircraft*> airspace;
 extern vector<aircraft*> entered_list;
 extern vector<aircraft*> GLOBAL_AIRCRAFT_LIST;
-
+extern unsigned int line;
 extern "C" void write_file_thread();
 
 /*

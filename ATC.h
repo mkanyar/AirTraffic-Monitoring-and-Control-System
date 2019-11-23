@@ -20,6 +20,8 @@ private:
 	static const int lowerY = 0;
 	static const int upperZ = 25000;
 	static const int lowerZ = 0;
+
+	static void Collision_handling(aircraft* a1, aircraft* a2);
 	static bool collision(aircraft* a, aircraft* b){
 		int vector_x,vector_y;
 		int atempx=a->getX();
@@ -50,6 +52,7 @@ private:
 		return false;
 
 	}
+
 
 public:
 

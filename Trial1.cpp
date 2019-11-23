@@ -14,11 +14,13 @@
 #include "TestCase.h"
 #include "trackfile.h"
 #include "radar.h"
+#include "comm.h"
 
 using namespace std;
 extern "C" void displaye_manager_thread();
 extern "C" void write_file_thread();
 extern "C" void display_manager_c_thread();
+bool operator_commanding = false;
 
 void time_stamp(){
 	time_t t = time(0);   // get time now
@@ -44,17 +46,17 @@ void* Tokenizer(string message){
 
 	if(!tokens.empty()){
 		//This is a method for 'comm' that will be used when we initialize it.
-		//receiveMessage(tokens);
+		comm::receiveMessage(tokens);
 	}
 }
 
 void* display_manager_c_thread(void* par){
 	int n;
 	char* token;
-	unsigned int line=0;
 	vector<string> string_list;
 
 	while(true){
+		while(operator_commanding==true);
 		auto start = std::chrono::system_clock::now();
 		while(pthread_mutex_lock( &buffstr )!=0);
 		n = bufferString.length();
@@ -122,8 +124,7 @@ void* Operator_Commands(void* parameter){
 			break;
 		case 4:
 			message = "4,";
-			cout <<"Please enter the ID of the aircraft followed by the type of pattern you would like to put it into in one of the following two forms:" << endl;
-			cout <<"'id,holding' or 'id,oval'" << endl;
+			cout <<"Please enter the ID of the aircraft to make it follow an OVAL/HOLDING pattern." << endl;
 			cin>>temp;
 			message+=temp;
 			break;
@@ -141,8 +142,7 @@ void* Operator_Commands(void* parameter){
 			break;
 		case 7:
 			message = "7,";
-			cout <<"Please enter the type of pattern which you would like all the aircrafts to enter in one of the following two forms:" << endl;
-			cout <<"'holding' or 'oval'" << endl;
+			cout <<"All aircrafts will be ordered to enter OVAL/HOLDING state." << endl;
 			cin>>temp;
 			message+=temp;
 			break;
@@ -158,8 +158,10 @@ void* Operator_Commands(void* parameter){
 		default:
 			cout<<"Invalid command, please try again.";
 
+
 		//comm' receive message Tokenizer(message);
 	}
+		Tokenizer(message);
 }
 
 void* write_file_thread(void* mys){
@@ -189,35 +191,6 @@ void* write_file_thread(void* mys){
 	}
 }
 
-void* displaye_manager_thread(void* rl){
-	int read_line = 0;
-	int actual_line=0;
-	int i =5;
-	while(i>0){
-
-	//Mutex lock
-	//while(pthread_mutex_lock( &mutex1 )!=0);
-	FILE* fp = fopen("Tracker.txt", "r");
-		if (fp == NULL)
-		    exit(EXIT_FAILURE);
-		char string[100];
-		while(fgets(string, 100, fp)) {
-			if(read_line<=actual_line){
-				cout<<string;
-				read_line++;
-			}
-			actual_line++;
-
-		}
-		fclose(fp);
-	i--;
-
-	//pthread_mutex_unlock(&mutex1);
-	actual_line=0;
-	sleep(5);
-	}
-	return(0);
-}
 
 //void display_manager_c(){
 //	FILE* fp = fopen("Tracker.txt", "r");
@@ -286,15 +259,15 @@ void* console_in(void* arg){
 	pthread_t tid1;
 	while(true){
 		cin>>choice;
-		tid1 = createSchedFifoThread(console_in, 98, SCHED_SPORADIC , NULL,false);
+		operator_commanding=true;
+		tid1 = createSchedFifoThread(Operator_Commands, 98, SCHED_FIFO , NULL,false);
 		//Operator_Commands(NULL);
 		pthread_join(tid1,NULL);
+		operator_commanding=false;
 	}
 }
 
 int main() {
-
-
 		GLOBAL_CLOCK=0;
 		int len = sizeof(TestCase::airplane_schedule)/sizeof(TestCase::airplane_schedule[0]);
 		for(int i =0;i<len;i+=8){
@@ -310,6 +283,7 @@ int main() {
 		}
 		cout << "Welcome to the ATC System" << endl;
 		radar rd();
+		comm COMM();
 		ATC atc(airspace);
 		//pthread_t tid1;
 		pthread_t tid1, tid2,tid3,tid4,tid5,tid6;
@@ -319,6 +293,7 @@ int main() {
 		tid4 = createSchedFifoThread(radar::populateAirspace,98,SCHED_RR,NULL,false);
 		tid5 = createSchedFifoThread(radar::populateBuffer,50,SCHED_RR,NULL,false);
 		tid6 = createSchedFifoThread(trackfile::write_file_thread,50,SCHED_RR,NULL,false);
+		console_in(NULL);
 		pthread_join(tid3,NULL);
 		pthread_join(tid1,NULL);
 		pthread_join(tid2,NULL);

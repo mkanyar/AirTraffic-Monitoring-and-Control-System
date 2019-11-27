@@ -14,39 +14,46 @@ using namespace std;
 class ATC {
 private:
 	// string& stringstream ;
-	static const int upperX = 100000;
+	static const int upperX = 5280000;
 	static const int lowerX = 0;
-	static const int upperY = 100000;
+	static const int upperY = 5280000;
 	static const int lowerY = 0;
 	static const int upperZ = 25000;
 	static const int lowerZ = 0;
 
 	static void Collision_handling(aircraft* a1, aircraft* a2);
+
+	//static bool global_oval(aircraft* a1){};
+
 	static bool collision(aircraft* a, aircraft* b){
+
 		int vector_x,vector_y;
-		int atempx=a->getX();
-		int atempy=a->getY();
-		int atempz=a->getZ();
-		int btempx=b->getX();
-		int btempy=b->getY();
-		int btempz=b->getZ();
-		for(int i =0;i<10;i++){
-			vector_x=atempx-btempx;
-			vector_y=atempy-btempy;
+		int atempx=a->getX()+a->getSpeedX();
+		int atempy=a->getY()+a->getSpeedY();
+		int atempz=a->getZ()+a->getSpeedZ();
+		int btempx=b->getX()+b->getSpeedX();
+		int btempy=b->getY()+b->getSpeedZ();
+		int btempz=b->getZ()+b->getSpeedX();
+
+		for(int i =0; i<10; i++){
+			vector_x = atempx-btempx;
+			vector_y = atempy-btempy;
 			if(sqrt(pow(vector_x,2)+pow(vector_y,2))<(3*5280) && abs(atempz-btempz)<1000)
 			{
 				//add to  a message such that communication can do something
 				while(pthread_mutex_lock( &buffstr )!=0);
-				bufferString+=to_string(GLOBAL_CLOCK)+", aircraft id "+to_string(a->getID())+" and aircraft id "+to_string(b->getID())+" have collision at "+to_string(GLOBAL_CLOCK+i)+".\n";
+				bufferString+="Time: "+ to_string(GLOBAL_CLOCK)+"| Aircraft ID "+to_string(a->getID())+" and aircraft ID "+to_string(b->getID())+" will collide at "+to_string(GLOBAL_CLOCK+i)+"\n";
 				pthread_mutex_unlock( &buffstr );
+				sleep(1);
 				return true;
 			}
-			atempx=a->getX()+a->getSpeedX();
-			atempy=a->getY()+a->getSpeedY();
-			atempz=a->getZ()+a->getSpeedZ();
-			btempx=b->getX()+b->getSpeedX();
-			btempy=b->getY()+b->getSpeedY();
-			btempz=b->getZ()+b->getSpeedZ();
+
+			atempx=a->getSpeedX();
+			atempy=a->getSpeedY();
+			atempz=a->getSpeedZ();
+			btempx=b->getSpeedX();
+			btempy=b->getSpeedY();
+			btempz=b->getSpeedZ();
 		}//
 
 		return false;

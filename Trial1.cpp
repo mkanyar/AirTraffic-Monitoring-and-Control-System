@@ -260,7 +260,7 @@ void* console_in(void* arg){
 	while(true){
 		cin>>choice;
 		operator_commanding=true;
-		tid1 = createSchedFifoThread(Operator_Commands, 98, SCHED_FIFO , NULL,false);
+		tid1 = createSchedFifoThread(Operator_Commands, 99, SCHED_FIFO , NULL,false);
 		//Operator_Commands(NULL);
 		pthread_join(tid1,NULL);
 		operator_commanding=false;
@@ -287,10 +287,10 @@ int main() {
 		ATC atc(airspace);
 		//pthread_t tid1;
 		pthread_t tid1, tid2,tid3,tid4,tid5,tid6;
-		tid1 = createSchedFifoThread(flying_aircrafts, 99, SCHED_FIFO , airspace,false);
+		tid1 = createSchedFifoThread(flying_aircrafts, 98, SCHED_FIFO , airspace,false);
 		tid2 = createSchedFifoThread(display_manager_c_thread, 50, SCHED_RR  , NULL,false);
-		tid3 = createSchedFifoThread(atc.Collision_detection,98,SCHED_RR,NULL,false);
-		tid4 = createSchedFifoThread(radar::populateAirspace,98,SCHED_RR,NULL,false);
+		tid3 = createSchedFifoThread(atc.Collision_detection,97,SCHED_RR,NULL,false);
+		tid4 = createSchedFifoThread(radar::populateAirspace,97,SCHED_RR,NULL,false);
 		tid5 = createSchedFifoThread(radar::populateBuffer,50,SCHED_RR,NULL,false);
 		tid6 = createSchedFifoThread(trackfile::write_file_thread,50,SCHED_RR,NULL,false);
 		console_in(NULL);

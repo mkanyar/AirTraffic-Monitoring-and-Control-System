@@ -90,6 +90,7 @@ void radar::populateEntered (){
 
 void* radar::populateAirspace(void* arg){
 	while(true){
+
 		auto start = std::chrono::system_clock::now();
 		//cout << "entered list size -> "<< entered_list.size()<<endl;
 		//vector here
@@ -101,7 +102,7 @@ void* radar::populateAirspace(void* arg){
 				//entered_list.erase(entered_list.begin() + i);
 				airspace.push_back(entered_list[i]);
 				while(pthread_mutex_lock( &buffstr )!=0);
-				bufferString+=to_string(GLOBAL_CLOCK)+",aircraft "+to_string(entered_list[i]->getID())+" enters into airspace.\n";
+				bufferString+= "Time: " + to_string(GLOBAL_CLOCK)+"| Aircraft "+to_string(entered_list[i]->getID())+" entered airspace\n";
 				pthread_mutex_unlock( &buffstr );
 				}
 			}
@@ -123,46 +124,55 @@ void* radar::populateBuffer(void* arg){
 	while(true){
 		auto start = std::chrono::system_clock::now();
 		stringstream ss;
+
+		while(pthread_mutex_lock( &a_space )!=0);
+
 		for (unsigned int i = 0; i < airspace.size(); i++){
-			//unknow
+
 			if(airspace[i]->getID()==-1){
 				if(fmodf((float)GLOBAL_CLOCK,15.0)==0.0){
-					ss << GLOBAL_CLOCK << "," << airspace[i]->getID() << ","
-														<< airspace[i]->getSpeedX() << ","
-														<< airspace[i]->getSpeedY() << ","
-														<< airspace[i]->getSpeedZ() << ","
-														<< airspace[i]->getX() << ","
-														<< airspace[i]->getY() << ","
-														<< airspace[i]->getZ() << ","
-														<<  "\n";
+					ss 	<< "Time: " << GLOBAL_CLOCK
+						<< "| ID: " << airspace[i]->getID()
+						<< ", Vx: " << airspace[i]->getSpeedX()
+						<< ", Vy: " << airspace[i]->getSpeedY()
+						<< ", Vz: " << airspace[i]->getSpeedZ()
+						<< ", X: "  << airspace[i]->getX()
+						<< ", Y: "  << airspace[i]->getY()
+						<< ", Z: "  << airspace[i]->getZ()
+						<< "\n";
 				}
-
 			}
 			else{
-//cout <<"BOOL-> "<< to_string() <<endl;
+//				cout <<"BOOL-> "<< to_string() <<endl;
 //				cout << " "<<to_string(!(airspace[i]->getZ()>=lowerZ && airspace[i]->getZ() <= upperZ))<<endl;
 //				cout << airspace[i]->getID()<<" "<<GLOBAL_CLOCK<<endl;
-				if(!((airspace[i]->getX() >= lowerX && airspace[i]->getX() <= upperX)
-						&& (airspace[i]->getY() >= lowerY && airspace[i]->getY() <= upperY)
-						&&(airspace[i]->getZ() >= lowerZ && airspace[i]->getZ() <= upperZ)))
+
+				if(!((airspace[i]->getX() >= lowerX && airspace[i]->getX() <= upperX) &&
+					 (airspace[i]->getY() >= lowerY && airspace[i]->getY() <= upperY) &&
+					 (airspace[i]->getZ() >= lowerZ && airspace[i]->getZ() <= upperZ))
+				)
+
 				{
 					//cout << airspace[i]->getID()<<" "<<GLOBAL_CLOCK<<endl;
 					comm::hitScan(airspace[i]);
 				}
 				else{
-				ss << GLOBAL_CLOCK << "," << airspace[i]->getID() << ","
-													<< airspace[i]->getSpeedX() << ","
-													<< airspace[i]->getSpeedY() << ","
-													<< airspace[i]->getSpeedZ() << ","
-													<< airspace[i]->getX() << ","
-													<< airspace[i]->getY() << ","
-													<< airspace[i]->getZ() << ","
-													<<  "\n";
+
+				ss 	<< "Time: " << GLOBAL_CLOCK
+					<< "| ID: " << airspace[i]->getID()
+					<< ", Vx: " << airspace[i]->getSpeedX()
+					<< ", Vy: " << airspace[i]->getSpeedY()
+					<< ", Vz: " << airspace[i]->getSpeedZ()
+					<< ", X: "  << airspace[i]->getX()
+					<< ", Y: "  << airspace[i]->getY()
+					<< ", Z: "  << airspace[i]->getZ()
+					<< "\n";
 				}
 			}
-
-
 		}
+
+		pthread_mutex_unlock( &a_space );
+
 		while(pthread_mutex_lock( &buffstr )!=0);
 		bufferString += ss.str();
 		pthread_mutex_unlock( &buffstr );
@@ -176,9 +186,16 @@ void* radar::populateBuffer(void* arg){
 void radar::printActive(){
 	cout << "Active List: " << endl;
 	for (unsigned int i = 0; i < airspace.size(); i++){
-		cout << "Aircraft ID: " << airspace[i]->getID() << endl;
-		cout << "X: " << airspace[i]->getX() << " Y: " << airspace[i]->getY() << " Z: " << airspace[i]->getZ() << endl;
-		cout << "SpeedX: " << airspace[i]->getSpeedX() << " SpeedY: " << airspace[i]->getSpeedY() << " SpeedZ: " << airspace[i]->getSpeedZ() << endl;
+		cout << "Aircraft ID: " << airspace[i]->getID()
+		<< "\n"
+		<< "X: " << airspace[i]->getX()
+		<< " Y: " << airspace[i]->getY()
+		<< " Z: " << airspace[i]->getZ()
+		<< "\n"
+		<< "SpeedX: " << airspace[i]->getSpeedX()
+		<< " SpeedY: " << airspace[i]->getSpeedY()
+		<< " SpeedZ: " << airspace[i]->getSpeedZ()
+		<< "\n";
 
 	}
 }

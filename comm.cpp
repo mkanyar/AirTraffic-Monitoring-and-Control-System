@@ -2,7 +2,11 @@
 
 using namespace std;
 //operator commands only
+
    	void comm::receiveMessage(vector <string> tokens){
+
+   		while(pthread_mutex_lock( &a_space )!=0);
+
    		string TaskNumber = tokens[0];
    		stringstream transform(TaskNumber);
    		int T1 = 0;
@@ -60,10 +64,12 @@ using namespace std;
    				transformID >> currentID;
    				if(currentID == ID) {
    					airspace[i]->setZ(givenAltitude);
-   					bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(airspace[i]->getID()) + " now has altitude equal to " + to_string(givenAltitude) + "\n";
+   					bufferString+= "Time: " + to_string(GLOBAL_CLOCK) + "| Aircraft with ID " + to_string(airspace[i]->getID()) + " now has altitude equal to " + to_string(givenAltitude) + "\n";
+   					break;
    				}
    			}
    		}
+
    		else if(TaskNumberInt == 2){
    			ID = T1;
    			x = T2;
@@ -79,7 +85,7 @@ using namespace std;
    					airspace[i]->setSpeedX(x);
    					airspace[i]->setSpeedY(y);
    					airspace[i]->setSpeedZ(z);
-   					bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(airspace[i]->getID()) + " now has velocity equal to: (Vx,Vy,Vz) = ("+to_string(T2)+","+to_string(T3)+","+to_string(T4)+")\n";
+   					bufferString+= "Time: " + to_string(GLOBAL_CLOCK) + "| Aircraft with ID " + to_string(airspace[i]->getID()) + " now has velocity equal to: (Vx,Vy,Vz) = ("+to_string(T2)+","+to_string(T3)+","+to_string(T4)+")\n";
    					break;
    				}
    			}
@@ -96,7 +102,8 @@ using namespace std;
    				if(currentID == ID) {
    					airspace[i]->setX(x);
    					airspace[i]->setY(y);
-   					bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(airspace[i]->getID()) + " is now pointed towards (x,y) = ("+to_string(T2)+","+to_string(T3)+")\n";
+   					bufferString+= "Time: " + to_string(GLOBAL_CLOCK) + "| Aircraft with ID " + to_string(airspace[i]->getID()) + " is now pointed towards (x,y) = ("+to_string(T2)+","+to_string(T3)+")\n";
+   					break;
    				}
    			}
    		}
@@ -109,12 +116,12 @@ using namespace std;
    				transformID >> currentID;
    				if(currentID == ID) {
    					airspace[i]->OVAL = true;
-   					bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(airspace[i]->getID()) + " entered OVAL/HOLDING state \n";
+   					bufferString+= "Time: " + to_string(GLOBAL_CLOCK) + "| Aircraft with ID " + to_string(airspace[i]->getID()) + " entered holding state \n";
+   					break;
    				}
    			}
    		}
 
-   		//NOT IMPLEMENTED YET FOR OVAL/HOLDING
    		else if(TaskNumberInt == 5){
    			ID = T1;
 
@@ -124,7 +131,8 @@ using namespace std;
    				transformID >> currentID;
    				if(currentID == ID) {
    					airspace[i]->OVAL = false;
-   					bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(airspace[i]->getID()) + " left its OVAL/HOLDING pattern \n";
+   					bufferString+= "Time: " + to_string(GLOBAL_CLOCK) + "| Aircraft with ID " + to_string(airspace[i]->getID()) + " left its holding pattern \n";
+   					break;
    				}
    			}
    		}
@@ -137,40 +145,41 @@ using namespace std;
    				if(currentID == ID) {
    					cout << "Aircraft ID: " + to_string(airspace[i]->getID()) << endl;
    					cout << "Entry Time: " + to_string(airspace[i]->getTime())<< endl;
-   					cout << "x-coordinate: " + to_string(airspace[i]->getX()) << endl;
-   					cout << "y-coordinate: " + to_string(airspace[i]->getY()) << endl;
-   					cout << "z-coordinate: " + to_string(airspace[i]->getZ()) << endl;
-   					cout << "x-speed: " + to_string(airspace[i]->getSpeedX()) << endl;
-   					cout << "y-speed: " + to_string(airspace[i]->getSpeedY()) << endl;
-   					cout << "z-speed: " + to_string(airspace[i]->getSpeedZ()) << endl;
-   					bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(airspace[i]->getID()) + " status acquired \n";
+   					cout << "X: " + to_string(airspace[i]->getX()) << endl;
+   					cout << "Y: " + to_string(airspace[i]->getY()) << endl;
+   					cout << "Z: " + to_string(airspace[i]->getZ()) << endl;
+   					cout << "Vx: " + to_string(airspace[i]->getSpeedX()) << endl;
+   					cout << "Vy: " + to_string(airspace[i]->getSpeedY()) << endl;
+   					cout << "Vz: " + to_string(airspace[i]->getSpeedZ()) << endl;
+   					bufferString+= "Time: " + to_string(GLOBAL_CLOCK) + "| Aircraft with ID " + to_string(airspace[i]->getID()) + ", status acquired \n";
+   					break;
    				}
    			}
    		}
    		else if(TaskNumberInt == 7){
    			GLOBAL_OVAL = true;
-   			bufferString+= to_string(GLOBAL_CLOCK) + " All aircrafts have entered entered OVAL/HOLDING state \n";
+   			bufferString+= "Time: " + to_string(GLOBAL_CLOCK) + "| All aircrafts have entered entered holding pattern \n";
    		}
    		//CHECK FOR ACCURACY OF THE COMMAND RELATIVE TO THE TASK ASKED TO DO
    		else if(TaskNumberInt == 8){
    			GLOBAL_OVAL = false;
-   			bufferString+= to_string(GLOBAL_CLOCK) + "All aircrafts left their patterns\n";
+   			bufferString+= "Time: " + to_string(GLOBAL_CLOCK) + "| All aircrafts left their holding patterns\n";
    		}
    		else{
    			for(int i = 0; i < airspace.size(); i++){
    				cout << "Aircraft ID: " + to_string(airspace[i]->getID()) << endl;
    				cout << "Entry Time: " + to_string(airspace[i]->getTime())<< endl;
-   				cout << "x-coordinate: " + to_string(airspace[i]->getX()) << endl;
-   				cout << "y-coordinate: " + to_string(airspace[i]->getY()) << endl;
-   				cout << "z-coordinate: " + to_string(airspace[i]->getZ()) << endl;
-   				cout << "x-speed: " + to_string(airspace[i]->getSpeedX()) << endl;
-   				cout << "y-speed: " + to_string(airspace[i]->getSpeedY()) << endl;
-   				cout << "z-speed: " + to_string(airspace[i]->getSpeedZ()) << endl;
+   				cout << "X: " + to_string(airspace[i]->getX()) << endl;
+   				cout << "Y: " + to_string(airspace[i]->getY()) << endl;
+   				cout << "Z: " + to_string(airspace[i]->getZ()) << endl;
+   				cout << "Vx: " + to_string(airspace[i]->getSpeedX()) << endl;
+   				cout << "Vy: " + to_string(airspace[i]->getSpeedY()) << endl;
+   				cout << "Vz: " + to_string(airspace[i]->getSpeedZ()) << endl;
    			}
-   			bufferString+= to_string(GLOBAL_CLOCK) + " All aircrafts' statuses acquired \n";
+   			bufferString+= "Time: " + to_string(GLOBAL_CLOCK) + "| All aircrafts' statuses acquired \n";
    		}
+   		pthread_mutex_unlock( &a_space );
    	}
-
 
    	void comm::deletePlane(int ID){
    		for(int i = 0; i < airspace.size(); i++){
@@ -178,7 +187,7 @@ using namespace std;
    			int currentID;
    			transformID >> currentID;
    			if(currentID == ID) {
-   				bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(ID) + " left airspace \n";
+   				bufferString+= "Time: " + to_string(GLOBAL_CLOCK) + "| Aircraft with ID " + to_string(ID) + " was removed from airspace \n";
    				airspace.erase(airspace.begin()+i);
    				break;
    			}
@@ -189,7 +198,7 @@ using namespace std;
    		for(int i = 0; i < airspace.size(); i++){
    			if(airspace[i]==hitobject){
    				while(pthread_mutex_lock( &buffstr )!=0);
-   				bufferString+= to_string(GLOBAL_CLOCK) + " aircraft with ID " + to_string(airspace[i]->getID()) + " left airspace\n";
+   				bufferString+= "Time: " + to_string(GLOBAL_CLOCK) + "| Aircraft with ID " + to_string(airspace[i]->getID()) + " left airspace\n";
    				pthread_mutex_unlock( &buffstr );
    				airspace.erase(airspace.begin()+i);
    			}

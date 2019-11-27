@@ -10,8 +10,10 @@
 #include "radar.h"
 
 using namespace std;
+
 class comm
-{private:
+{
+	private:
 
     //vector <aircraft> airplanes;
 

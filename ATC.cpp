@@ -19,7 +19,9 @@ ATC::ATC(vector<aircraft*> aircraftlist){
 void ATC::Collision_handling(aircraft* a1, aircraft* a2){
 
 	float i = 0.3;
-	bool switchturn = false;
+	float j = 3;
+
+	//bool switchturn = false;
 
 	int nowclock =GLOBAL_CLOCK;
 
@@ -29,19 +31,16 @@ void ATC::Collision_handling(aircraft* a1, aircraft* a2){
 	int savea2y = a2->getSpeedY();
 
 	while (collision(a1,a2)){
-		if(!switchturn){
-			a1->setX(a2->getX()*i);
-			switchturn = true;
+		a1->setSpeedX(a1->getSpeedX()*i);
+		a1->setSpeedY(a1->getSpeedY()*i);
+		a2->setSpeedX(a2->getSpeedY()*j);
+		a2->setSpeedY(a2->getSpeedY()*j);
+		if(i > 0){
+			i = i - 0.1;
 		}
-		else{
-			a1->setX(-a2->getX()*i);
-
-				switchturn = false;
-		}
-
-
-		i = i + 0.1;
+		break;
 	}
+
 	while(nowclock == GLOBAL_CLOCK);
 	a1->setSpeedX(savea1x);
 	a2->setSpeedX(savea2x);
@@ -67,7 +66,7 @@ void* ATC::Collision_detection(void* arg){
 			if(i!=j){
 				if(collision(airspace[i],airspace[j]))
 				{
-					collision_message+="Collision happen with "+to_string(airspace[i]->getID())+" and "+to_string(airspace[j]->getID())+"\n";
+					//collision_message+="Collision happen with "+to_string(airspace[i]->getID())+" and "+to_string(airspace[j]->getID())+"\n";
 					Collision_handling(airspace[i],airspace[j]);
 				}
 			}

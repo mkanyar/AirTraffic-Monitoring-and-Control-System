@@ -4,6 +4,8 @@ bool GLOBAL_OVAL=false;
 int GLOBAL_CLOCK=0;
 string bufferString="";
 pthread_mutex_t buffstr = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t a_space = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t e_list = PTHREAD_MUTEX_INITIALIZER;
 
 aircraft::aircraft()
 {
@@ -67,7 +69,7 @@ bool aircraft::activate(string& bufferString){
 		entered=true;
 		if(this->getID()!=-1){
 			while(pthread_mutex_lock( &buffstr )!=0);
-			bufferString+=to_string(GLOBAL_CLOCK)+",aircraft "+to_string(this->id)+" is operating.\n";
+			bufferString+="Time: " + to_string(GLOBAL_CLOCK)+"| Aircraft "+to_string(this->id)+" is operating\n";
 			pthread_mutex_unlock( &buffstr );
 		}
 

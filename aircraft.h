@@ -18,6 +18,9 @@ extern bool GLOBAL_OVAL;
 extern int GLOBAL_CLOCK;
 extern string bufferString;
 extern pthread_mutex_t buffstr;
+extern pthread_mutex_t a_space;
+extern pthread_mutex_t e_list;
+
 class aircraft
 {
 private:

@@ -32,8 +32,8 @@ private:
 		int atempy=a->getY()+a->getSpeedY();
 		int atempz=a->getZ()+a->getSpeedZ();
 		int btempx=b->getX()+b->getSpeedX();
-		int btempy=b->getY()+b->getSpeedZ();
-		int btempz=b->getZ()+b->getSpeedX();
+		int btempy=b->getY()+b->getSpeedY();
+		int btempz=b->getZ()+b->getSpeedZ();
 
 		for(int i =0; i<10; i++){
 			vector_x = atempx-btempx;
@@ -42,7 +42,7 @@ private:
 			{
 				//add to  a message such that communication can do something
 				while(pthread_mutex_lock( &buffstr )!=0);
-				bufferString+="Time: "+ to_string(GLOBAL_CLOCK)+"| Aircraft ID "+to_string(a->getID())+" and aircraft ID "+to_string(b->getID())+" will collide at "+to_string(GLOBAL_CLOCK+i)+"\n";
+				bufferString+= "COLLISION|Time: "+ to_string(GLOBAL_CLOCK)+"| Aircraft ID "+to_string(a->getID())+" and aircraft ID "+to_string(b->getID())+" will collide at "+to_string(GLOBAL_CLOCK+i)+"\n";
 				pthread_mutex_unlock( &buffstr );
 				sleep(1);
 				return true;

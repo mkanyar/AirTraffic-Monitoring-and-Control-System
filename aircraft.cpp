@@ -69,7 +69,7 @@ bool aircraft::activate(string& bufferString){
 		entered=true;
 		if(this->getID()!=-1){
 			while(pthread_mutex_lock( &buffstr )!=0);
-			bufferString+="Time: " + to_string(GLOBAL_CLOCK)+"| Aircraft "+to_string(this->id)+" is operating\n";
+			bufferString+= "START|Time: " + to_string(GLOBAL_CLOCK)+"| Aircraft "+to_string(this->id)+" is operating\n";
 			pthread_mutex_unlock( &buffstr );
 		}
 

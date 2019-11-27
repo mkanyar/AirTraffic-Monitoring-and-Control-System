@@ -102,7 +102,7 @@ void* radar::populateAirspace(void* arg){
 				//entered_list.erase(entered_list.begin() + i);
 				airspace.push_back(entered_list[i]);
 				while(pthread_mutex_lock( &buffstr )!=0);
-				bufferString+= "Time: " + to_string(GLOBAL_CLOCK)+"| Aircraft "+to_string(entered_list[i]->getID())+" entered airspace\n";
+				bufferString += "ENTRY|Time: " + to_string(GLOBAL_CLOCK)+"| Aircraft "+to_string(entered_list[i]->getID())+" entered airspace\n";
 				pthread_mutex_unlock( &buffstr );
 				}
 			}
@@ -131,7 +131,7 @@ void* radar::populateBuffer(void* arg){
 
 			if(airspace[i]->getID()==-1){
 				if(fmodf((float)GLOBAL_CLOCK,15.0)==0.0){
-					ss 	<< "Time: " << GLOBAL_CLOCK
+					ss 	<< "SCAN|Time: " << GLOBAL_CLOCK
 						<< "| ID: " << airspace[i]->getID()
 						<< ", Vx: " << airspace[i]->getSpeedX()
 						<< ", Vy: " << airspace[i]->getSpeedY()
@@ -158,7 +158,7 @@ void* radar::populateBuffer(void* arg){
 				}
 				else{
 
-				ss 	<< "Time: " << GLOBAL_CLOCK
+				ss 	<< "SCAN|Time: " << GLOBAL_CLOCK
 					<< "| ID: " << airspace[i]->getID()
 					<< ", Vx: " << airspace[i]->getSpeedX()
 					<< ", Vy: " << airspace[i]->getSpeedY()

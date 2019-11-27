@@ -75,7 +75,7 @@ void trackfile::newCurrentPosition(int id, int speed_x, int speed_y, int speed_z
 }
 
 void* trackfile::write_file_thread(void* mys){
-	//int i = 5;
+	int i = 0;
 	const char* s;
 	while(true){
 	//while(pthread_mutex_lock( &mutex1 )!=0);
@@ -85,8 +85,14 @@ void* trackfile::write_file_thread(void* mys){
 	pthread_mutex_unlock( &buffstr );
 	//cout << global_clock << " Start writing"<<endl;
 	FILE *pFile2;
+	if(i==0){
+		pFile2 = fopen("Tracker.txt", "w");
+		i++;
+	}
+	else{
+		pFile2 = fopen("Tracker.txt", "a");
+	}
 
-	pFile2 = fopen("Tracker.txt", "a");
 	if(pFile2==NULL) {
 	    perror("Error opening file.");
 	}

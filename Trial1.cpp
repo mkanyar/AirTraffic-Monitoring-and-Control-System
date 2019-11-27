@@ -70,7 +70,9 @@ void* display_manager_c_thread(void* par){
 			token = strtok (NULL, "\n");
 		}
 		for(;line<string_list.size();line++){
-			cout<<string_list[line]<<endl;
+			if(string_list[line].at(0) != 'R' && string_list[line].at(0) != 'I'){ //I for input, R for response
+				cout<<string_list[line]<<endl;
+			}
 		}
 		string_list.clear();
 		auto end = std::chrono::system_clock::now();
@@ -91,7 +93,10 @@ void* Operator_Commands(void* parameter){
 		cout<<"6. Get the status of an aircraft"<<endl;
 		cout<<"7. Broadcast to all aircraft to Enter a Pattern"<<endl;
 		cout<<"8. Broadcast to all aircraft to Leave a Pattern"<<endl;
-		cout<<"9. Broadcast to all aircraft to get their Status"<<endl;
+		cout<<"9. Add an aircraft"<<endl;
+		cout<<"10. Remove an aircraft"<<endl;
+		cout<<"11. Project an aircraft's position"<<endl;
+		cout<<"12. Broadcast to all aircraft to get their Status"<<endl;
 		cin >> choice;
 
 		string message = "";
@@ -103,41 +108,64 @@ void* Operator_Commands(void* parameter){
 		case 1:
 			message = "1,";
 			cout <<"Please enter the ID of the aircraft and the altitude to be set in the following form:" << endl;
-			cout <<"'id,altitude'" << endl;
+			cout <<"'ID,Altitude'" << endl;
 			cin>>temp;
-			cout<< temp<<endl;
+			cout<< "INPUT| " + temp << endl;
+			while(pthread_mutex_lock( &buffstr )!=0);
+			bufferString+= "INPUT| " + temp +"\n";
+			pthread_mutex_unlock( &buffstr );
 			message+=temp;
 			break;
 		case 2:
 			message = "2,";
 			cout <<"Please enter the ID of the aircraft and the velocities to be set of each of the x,y and z coordinates in the following form:" << endl;
-			cout <<"'id,x velocity,y velocity,z velocity'" << endl;
+			cout <<"'ID,Vx,Vy,Vz'" << endl;
 			cin>>temp;
+			cout<< "INPUT| " + temp << endl;
+			while(pthread_mutex_lock( &buffstr )!=0);
+			bufferString+= "INPUT| " + temp +"\n";
+			pthread_mutex_unlock( &buffstr );
 			message+=temp;
 			break;
 		case 3:
 			message = "3,";
 			cout <<"Please enter the ID of the aircraft and the x and y coordinates of a point in the direction where the aircraft is to be directed to in the following form:" << endl;
-			cout <<"'id,x coordinate,ycoordinate'" << endl;
+			cout <<"'ID,X,Y'" << endl;
 			cin>>temp;
+			cout<< "INPUT| " + temp << endl;
+			while(pthread_mutex_lock( &buffstr )!=0);
+			bufferString+= "INPUT| " + temp +"\n";
+			pthread_mutex_unlock( &buffstr );
 			message+=temp;
 			break;
 		case 4:
 			message = "4,";
 			cout <<"Please enter the ID of the aircraft to make it follow an OVAL/HOLDING pattern." << endl;
 			cin>>temp;
+			cout<< "INPUT| " + temp << endl;
+			while(pthread_mutex_lock( &buffstr )!=0);
+			bufferString+= "INPUT| " + temp +"\n";
+			pthread_mutex_unlock( &buffstr );
 			message+=temp;
 			break;
 		case 5:
 			message = "5,";
 			cout <<"Please enter the ID of the aircraft to make it leave its pattern:" << endl;
 			cin>>temp;
+			cout<< "INPUT| " + temp << endl;
+			while(pthread_mutex_lock( &buffstr )!=0);
+			bufferString+= "INPUT| " + temp +"\n";
+			pthread_mutex_unlock( &buffstr );
 			message+=temp;
 			break;
 		case 6:
 			message = "6,";
 			cout <<"Please enter the ID of the aircraft to receive its status:" << endl;
 			cin>>temp;
+			cout<< "INPUT| " + temp << endl;
+			while(pthread_mutex_lock( &buffstr )!=0);
+			bufferString+= "INPUT| " + temp +"\n";
+			pthread_mutex_unlock( &buffstr );
 			message+=temp;
 			break;
 		case 7:
@@ -149,10 +177,41 @@ void* Operator_Commands(void* parameter){
 		case 8:
 			message = "8,";
 			cout <<"All the aircrafts will leave their pattern." << endl;
-
 			break;
 		case 9:
 			message = "9,";
+			cout <<"Please enter the ID, the Vx, the Vy, the Vz, the X, the Y, the Z of the  new aircraft you wish to create in the following form:" << endl;
+			cout <<"'ID,Vx,Vy,Vz,X,Y,Z'" << endl;
+			cin>>temp;
+			cout<< "INPUT| " + temp << endl;
+			while(pthread_mutex_lock( &buffstr )!=0);
+			bufferString+= "INPUT| " + temp +"\n";
+			pthread_mutex_unlock( &buffstr );
+			message+=temp;
+			break;
+		case 10:
+			message = "10,";
+			cout <<"Please enter the ID of the aircraft you wish to delete:" << endl;
+			cin>>temp;
+			cout<< "INPUT| " + temp << endl;
+			while(pthread_mutex_lock( &buffstr )!=0);
+			bufferString+= "INPUT| " + temp +"\n";
+			pthread_mutex_unlock( &buffstr );
+			message+=temp;
+			break;
+		case 11:
+			message = "11,";
+			cout <<"Please enter the aircraft ID and the amount of seconds to project into future in the following form:" << endl;
+			cout <<"'ID,Time'" << endl;
+			cin>>temp;
+			cout<< "INPUT| " + temp << endl;
+			while(pthread_mutex_lock( &buffstr )!=0);
+			bufferString+= "INPUT| " + temp +"\n";
+			pthread_mutex_unlock( &buffstr );
+			message+=temp;
+			break;
+		case 12:
+			message = "12,";
 			cout <<"The following are the statuses of all the aircrafts:" << endl;
 			break;
 		default:

@@ -59,13 +59,15 @@ void* ATC::Collision_detection(void* arg){
 		for(unsigned int j =0;j<airspace.size();j++){
 			//cout << "entered second for loop"<<endl;
 			if(i!=j){
-				if(collision(airspace[i],airspace[j]))
-				{
-					//collision_message+="Collision happen with "+to_string(airspace[i]->getID())+" and "+to_string(airspace[j]->getID())+"\n";
-					Collision_handling(airspace[i],airspace[j]);
-					/*airspace[i]->setZ(airspace[i]->getZ()+500);
-					airspace[j]->setZ(airspace[j]->getZ()-500);*/
+				if(airspace[i]->getID() != -1 || airspace[j]->getID() != -1){
+					if(collision(airspace[i],airspace[j]))
+					{
+						//collision_message+="Collision happen with "+to_string(airspace[i]->getID())+" and "+to_string(airspace[j]->getID())+"\n";
+						Collision_handling(airspace[i],airspace[j]);
+						/*airspace[i]->setZ(airspace[i]->getZ()+500);
+						airspace[j]->setZ(airspace[j]->getZ()-500);*/
 
+					}
 				}
 			}
 		}

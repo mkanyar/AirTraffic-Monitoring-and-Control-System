@@ -105,12 +105,9 @@ using namespace std;
    			givenAltitude = T2;
 
    			while(pthread_mutex_lock( &a_space )!=0);
-   			for(int i = 0; i < airspace.size(); i++){
-   				stringstream transformID(airspace[i]->getID());
-   				int currentID;
-   				transformID >> currentID;
+   			for(unsigned int i = 0; i < airspace.size(); i++){
 
-   				if(currentID == ID) {
+   				if(airspace[i]->getID() == ID) {
    					airspace[i]->setZ(givenAltitude);
    					cout << "RESPONSE|" << "Time: " + to_string(GLOBAL_CLOCK) << "| Aircraft with ID " << to_string(airspace[i]->getID()) << " now has altitude equal to " << to_string(givenAltitude) << "\n";
    					while(pthread_mutex_lock( &buffstr )!=0);
@@ -127,15 +124,11 @@ using namespace std;
    			x = T2;
    			y = T3;
    			z = T4;
-   			int currentID;
 
    			while(pthread_mutex_lock( &a_space )!=0);
-   			for(int i = 0; i < airspace.size(); i++){
-   				stringstream transformID(airspace[i]->getID());
-   				int currentID;
-   				transformID >> currentID;
+   			for(unsigned int i = 0; i < airspace.size(); i++){
 
-   				if(currentID == ID) {
+   				if(airspace[i]->getID() == ID) {
    					airspace[i]->setSpeedX(x);
    					airspace[i]->setSpeedY(y);
    					airspace[i]->setSpeedZ(z);
@@ -154,11 +147,8 @@ using namespace std;
    			y = T3;
 
    			while(pthread_mutex_lock( &a_space )!=0);
-   			for(int i = 0; i < airspace.size(); i++){
-   				stringstream transformID(airspace[i]->getID());
-   				int currentID;
-   				transformID >> currentID;
-   				if(currentID == ID) {
+   			for(unsigned int i = 0; i < airspace.size(); i++){
+   				if(airspace[i]->getID() == ID) {
    					airspace[i]->setX(x);
    					airspace[i]->setY(y);
    					cout << "RESPONSE|" << "Time: " << to_string(GLOBAL_CLOCK) << "| Aircraft with ID " << to_string(airspace[i]->getID()) << " is now pointed towards (x,y) = (" << to_string(T2) << "," << to_string(T3) << ")\n";
@@ -174,11 +164,8 @@ using namespace std;
    		else if(TaskNumberInt == 4){
    			ID = T1;
    			while(pthread_mutex_lock( &a_space )!=0);
-   			for(int i = 0; i < airspace.size(); i++){
-   				stringstream transformID(airspace[i]->getID());
-   				int currentID;
-   				transformID >> currentID;
-   				if(currentID == ID) {
+   			for(unsigned int i = 0; i < airspace.size(); i++){
+   				if(airspace[i]->getID() == ID) {
    					airspace[i]->OVAL = true;
    					cout << "RESPONSE|" << "Time: " << to_string(GLOBAL_CLOCK) << "| Aircraft with ID " << to_string(airspace[i]->getID()) << " entered holding state \n";
    					while(pthread_mutex_lock( &buffstr )!=0);
@@ -194,11 +181,8 @@ using namespace std;
    			ID = T1;
 
    			while(pthread_mutex_lock( &a_space )!=0);
-   			for(int i = 0; i < airspace.size(); i++){
-   				stringstream transformID(airspace[i]->getID());
-   				int currentID;
-   				transformID >> currentID;
-   				if(currentID == ID) {
+   			for(unsigned int i = 0; i < airspace.size(); i++){
+   				if(airspace[i]->getID() == ID) {
    					airspace[i]->OVAL = false;
    					cout << "RESPONSE|" << "Time: " << to_string(GLOBAL_CLOCK) << "| Aircraft with ID " << to_string(airspace[i]->getID()) << " left its holding pattern \n";
    					while(pthread_mutex_lock( &buffstr )!=0);
@@ -212,11 +196,8 @@ using namespace std;
    		else if(TaskNumberInt == 6){
    			ID = T1;
    			while(pthread_mutex_lock( &a_space )!=0);
-   			for(int i = 0; i < airspace.size(); i++){
-   				stringstream transformID(airspace[i]->getID());
-   				int currentID;
-   				transformID >> currentID;
-   				if(currentID == ID) {
+   			for(unsigned int i = 0; i < airspace.size(); i++){
+   				if(airspace[i]->getID() == ID) {
    					cout << "Aircraft ID: " + to_string(airspace[i]->getID()) << endl;
    					cout << "Entry Time: " + to_string(airspace[i]->getTime())<< endl;
    					cout << "X: " + to_string(airspace[i]->getX()) << endl;
@@ -237,9 +218,9 @@ using namespace std;
    		}
    		else if(TaskNumberInt == 7){
    			GLOBAL_OVAL = true;
-   			cout << "RESPONSE|" << "Time: " << to_string(GLOBAL_CLOCK) << "| All aircrafts have entered entered holding pattern (enter any key) \n";
+   			cout << "RESPONSE|" << "Time: " << to_string(GLOBAL_CLOCK) << "| All aircrafts have entered entered holding pattern\n";
    			while(pthread_mutex_lock( &buffstr )!=0);
-   			bufferString+= "RESPONSE|Time: " + to_string(GLOBAL_CLOCK) + "| All aircrafts have entered entered holding pattern (enter any key) \n";
+   			bufferString+= "RESPONSE|Time: " + to_string(GLOBAL_CLOCK) + "| All aircrafts have entered entered holding pattern\n";
    			pthread_mutex_unlock( &buffstr );
    		}
    		//CHECK FOR ACCURACY OF THE COMMAND RELATIVE TO THE TASK ASKED TO DO
@@ -272,9 +253,7 @@ using namespace std;
    			ID = T1;
 
    			while(pthread_mutex_lock( &a_space )!=0);
-   			cout <<"HELLO" <<endl;
-			for(int i = 0; i < airspace.size(); i++){
-				cout <<"BYE" <<endl;
+			for(unsigned int i = 0; i < airspace.size(); i++){
 				if(airspace[i]->getID() == ID) {
 					airspace.erase(airspace.begin()+i);
 					break;
@@ -283,7 +262,7 @@ using namespace std;
 			pthread_mutex_unlock( &a_space );
 
 			while(pthread_mutex_lock( &e_list )!=0);
-			for(int i = 0; i < entered_list.size(); i++){
+			for(unsigned int i = 0; i < entered_list.size(); i++){
 				if(entered_list[i]->getID() == ID) {
 					entered_list.erase(entered_list.begin()+i);
 					break;
@@ -291,7 +270,7 @@ using namespace std;
 			}
 			pthread_mutex_unlock( &e_list );
 
-			for(int i = 0; i < GLOBAL_AIRCRAFT_LIST.size(); i++){
+			for(unsigned int i = 0; i < GLOBAL_AIRCRAFT_LIST.size(); i++){
 				if(GLOBAL_AIRCRAFT_LIST[i]->getID() == ID) {
 					GLOBAL_AIRCRAFT_LIST.erase(GLOBAL_AIRCRAFT_LIST.begin()+i);
 					break;
@@ -307,10 +286,8 @@ using namespace std;
    			ID = T1;
    			projectTime = T2;
 
-   			int currentID;
-
 			while(pthread_mutex_lock( &a_space )!=0);
-			for(int i = 0; i < airspace.size(); i++){
+			for(unsigned int i = 0; i < airspace.size(); i++){
 				stringstream transformID(airspace[i]->getID());
 				int currentID;
 				transformID >> currentID;
@@ -333,7 +310,7 @@ using namespace std;
    		}
    		else{
    			while(pthread_mutex_lock( &a_space )!=0);
-   			for(int i = 0; i < airspace.size(); i++){
+   			for(unsigned int i = 0; i < airspace.size(); i++){
    				cout << "Aircraft ID: " + to_string(airspace[i]->getID()) << endl;
    				cout << "Entry Time: " + to_string(airspace[i]->getTime())<< endl;
    				cout << "X: " + to_string(airspace[i]->getX()) << endl;
@@ -371,7 +348,7 @@ using namespace std;
 
    	void comm::hitScan(aircraft* hitobject){
    		pthread_mutex_lock( &a_space );
-   		for(int i = 0; i < airspace.size(); i++){
+   		for(unsigned int i = 0; i < airspace.size(); i++){
    			if(airspace[i]==hitobject){
    				while(pthread_mutex_lock( &buffstr )!=0);
    				bufferString+= "EXIT|Time: " + to_string(GLOBAL_CLOCK) + "| Aircraft with ID " + to_string(airspace[i]->getID()) + " left airspace\n";

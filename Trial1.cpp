@@ -170,17 +170,15 @@ void* Operator_Commands(void* parameter){
 			break;
 		case 7:
 			message = "7,";
-			cout <<"All aircrafts will be ordered to enter OVAL/HOLDING state." << endl;
-			cin>>temp;
-			message+=temp;
+			cout <<"All aircrafts will be ordered to enter holding pattern" << endl;
 			break;
 		case 8:
 			message = "8,";
-			cout <<"All the aircrafts will leave their pattern." << endl;
+			cout <<"All the aircrafts will leave their holding pattern" << endl;
 			break;
 		case 9:
 			message = "9,";
-			cout <<"Please enter the ID, the Vx, the Vy, the Vz, the X, the Y, the Z of the  new aircraft you wish to create in the following form:" << endl;
+			cout <<"Please enter the ID, the Vx, the Vy, the Vz, the X, the Y, the Z of the new aircraft you wish to create in the following form:" << endl;
 			cout <<"'ID,Vx,Vy,Vz,X,Y,Z'" << endl;
 			cin>>temp;
 			cout<< "INPUT| " + temp << endl;
@@ -294,7 +292,7 @@ void* flying_aircrafts(void* arg){
 
 
 template<typename T>
-pthread_t createSchedFifoThread(void* (*pThreadFunc)(void*), int priority, int schedpolicy, T parameter,bool b_detached = false)
+static pthread_t createSchedFifoThread(void* (*pThreadFunc)(void*), int priority, int schedpolicy, T parameter,bool b_detached = false)
 {
     pthread_t tid;
     pthread_attr_t attr;

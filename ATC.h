@@ -44,16 +44,17 @@ private:
 				while(pthread_mutex_lock( &buffstr )!=0);
 				bufferString+= "COLLISION|Time: "+ to_string(GLOBAL_CLOCK)+"| Aircraft ID "+to_string(a->getID())+" and aircraft ID "+to_string(b->getID())+" will collide at "+to_string(GLOBAL_CLOCK+i)+"\n";
 				pthread_mutex_unlock( &buffstr );
-				sleep(1);
+				//sleep(1);
 				return true;
 			}
 
-			atempx=a->getSpeedX();
-			atempy=a->getSpeedY();
-			atempz=a->getSpeedZ();
-			btempx=b->getSpeedX();
-			btempy=b->getSpeedY();
-			btempz=b->getSpeedZ();
+			atempx=a->getX()+a->getSpeedX();
+			atempy=a->getY()+a->getSpeedY();
+			atempz=a->getZ()+a->getSpeedZ();
+			btempx=b->getX()+b->getSpeedX();
+			btempy=b->getY()+b->getSpeedY();
+			btempz=b->getZ()+b->getSpeedZ();
+			break;
 		}//
 
 		return false;

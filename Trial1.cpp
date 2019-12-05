@@ -31,7 +31,6 @@ void time_stamp(){
 	         << "\n";
 }
 
-//Untested
 void* Tokenizer(string message){
 	vector <string> tokens;
 	int n = message.length();
@@ -80,88 +79,85 @@ void* display_manager_c_thread(void* par){
 
 void* Operator_Commands(void* parameter){
 	int choice;
-	// Add user message to the buffer
-		cout<<"-------------------Operator Input Menu-------------------\nOptions:\n";
-		cout<<"0. Exit the program"<<endl;
-		cout<<"1. Command an aircraft to change Altitude"<<endl;
-		cout<<"2. Command an aircraft to change Speed"<<endl;
-		cout<<"3. Command an aircraft to change Direction"<<endl;
-		cout<<"4. Command an aircraft to Enter a Pattern"<<endl;
-		cout<<"5. Command an aircraft to Leave a Pattern"<<endl;
-		cout<<"6. Get the status of an aircraft"<<endl;
-		cout<<"7. Broadcast to all aircraft to Enter a Pattern"<<endl;
-		cout<<"8. Broadcast to all aircraft to Leave a Pattern"<<endl;
-		cout<<"9. Broadcast to all aircraft to get their Status"<<endl;
-		cin >> choice;
+	//Operator Commands
+	cout<<"-------------------Operator Input Menu-------------------\nOptions:\n";
+	cout<<"0. Exit the program"<<endl;
+	cout<<"1. Command an aircraft to change Altitude"<<endl;
+	cout<<"2. Command an aircraft to change Speed"<<endl;
+	cout<<"3. Command an aircraft to change Direction"<<endl;
+	cout<<"4. Command an aircraft to Enter a Pattern"<<endl;
+	cout<<"5. Command an aircraft to Leave a Pattern"<<endl;
+	cout<<"6. Get the status of an aircraft"<<endl;
+	cout<<"7. Broadcast to all aircraft to Enter a Pattern"<<endl;
+	cout<<"8. Broadcast to all aircraft to Leave a Pattern"<<endl;
+	cout<<"9. Broadcast to all aircraft to get their Status"<<endl;
+	cin >> choice;
 
-		string message = "";
-		string temp = "";
+	string message = "";
+	string temp = "";
 
-		switch(choice){
-		case 0:
-			break;
-		case 1:
-			message = "1,";
-			cout <<"Please enter the ID of the aircraft and the altitude to be set in the following form:" << endl;
-			cout <<"'id,altitude'" << endl;
-			cin>>temp;
-			cout<< temp<<endl;
-			message+=temp;
-			break;
-		case 2:
-			message = "2,";
-			cout <<"Please enter the ID of the aircraft and the velocities to be set of each of the x,y and z coordinates in the following form:" << endl;
-			cout <<"'id,x velocity,y velocity,z velocity'" << endl;
-			cin>>temp;
-			message+=temp;
-			break;
-		case 3:
-			message = "3,";
-			cout <<"Please enter the ID of the aircraft and the x and y coordinates of a point in the direction where the aircraft is to be directed to in the following form:" << endl;
-			cout <<"'id,x coordinate,ycoordinate'" << endl;
-			cin>>temp;
-			message+=temp;
-			break;
-		case 4:
-			message = "4,";
-			cout <<"Please enter the ID of the aircraft to make it follow an OVAL/HOLDING pattern." << endl;
-			cin>>temp;
-			message+=temp;
-			break;
-		case 5:
-			message = "5,";
-			cout <<"Please enter the ID of the aircraft to make it leave its pattern:" << endl;
-			cin>>temp;
-			message+=temp;
-			break;
-		case 6:
-			message = "6,";
-			cout <<"Please enter the ID of the aircraft to receive its status:" << endl;
-			cin>>temp;
-			message+=temp;
-			break;
-		case 7:
-			message = "7,";
-			cout <<"All aircrafts will be ordered to enter OVAL/HOLDING state." << endl;
-			cin>>temp;
-			message+=temp;
-			break;
-		case 8:
-			message = "8,";
-			cout <<"All the aircrafts will leave their pattern." << endl;
-
-			break;
-		case 9:
-			message = "9,";
-			cout <<"The following are the statuses of all the aircrafts:" << endl;
-			break;
-		default:
-			cout<<"Invalid command, please try again.";
-
-
-		//comm' receive message Tokenizer(message);
+	switch(choice){
+	case 0:
+		break;
+	case 1:
+		message = "1,";
+		cout <<"Please enter the ID of the aircraft and the altitude to be set in the following form:" << endl;
+		cout <<"'id,altitude'" << endl;
+		cin>>temp;
+		cout<< temp<<endl;
+		message+=temp;
+		break;
+	case 2:
+		message = "2,";
+		cout <<"Please enter the ID of the aircraft and the velocities to be set of each of the x,y and z coordinates in the following form:" << endl;
+		cout <<"'id,x velocity,y velocity,z velocity'" << endl;
+		cin>>temp;
+		message+=temp;
+		break;
+	case 3:
+		message = "3,";
+		cout <<"Please enter the ID of the aircraft and the x and y coordinates of a point in the direction where the aircraft is to be directed to in the following form:" << endl;
+		cout <<"'id,x coordinate,ycoordinate'" << endl;
+		cin>>temp;
+		message+=temp;
+		break;
+	case 4:
+		message = "4,";
+		cout <<"Please enter the ID of the aircraft to make it follow an OVAL/HOLDING pattern." << endl;
+		cin>>temp;
+		message+=temp;
+		break;
+	case 5:
+		message = "5,";
+		cout <<"Please enter the ID of the aircraft to make it leave its pattern:" << endl;
+		cin>>temp;
+		message+=temp;
+		break;
+	case 6:
+		message = "6,";
+		cout <<"Please enter the ID of the aircraft to receive its status:" << endl;
+		cin>>temp;
+		message+=temp;
+		break;
+	case 7:
+		message = "7,";
+		cout <<"All aircrafts will be ordered to enter OVAL/HOLDING state." << endl;
+		cin>>temp;
+		message+=temp;
+		break;
+	case 8:
+		message = "8,";
+		cout <<"All the aircrafts will leave their pattern." << endl;
+		break;
+	case 9:
+		message = "9,";
+		cout <<"The following are the statuses of all the aircrafts:" << endl;
+		break;
+	default:
+		cout<<"Invalid command, please try again.";
 	}
-		Tokenizer(message);
+	//Send the message to the tokenizer
+	Tokenizer(message);
 }
 
 void* write_file_thread(void* mys){

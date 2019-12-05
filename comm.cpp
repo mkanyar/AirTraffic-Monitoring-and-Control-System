@@ -1,7 +1,7 @@
 #include "comm.h"
 
 using namespace std;
-//operator commands only
+//Operator Commands
    	void comm::receiveMessage(vector <string> tokens){
    		string TaskNumber = tokens[0];
    		stringstream transform(TaskNumber);
@@ -103,6 +103,7 @@ using namespace std;
 
    		else if(TaskNumberInt == 4){
    			ID = T1;
+			
    			for(int i = 0; i < airspace.size(); i++){
    				stringstream transformID(airspace[i]->getID());
    				int currentID;
@@ -114,10 +115,9 @@ using namespace std;
    			}
    		}
 
-   		//NOT IMPLEMENTED YET FOR OVAL/HOLDING
    		else if(TaskNumberInt == 5){
    			ID = T1;
-
+			
    			for(int i = 0; i < airspace.size(); i++){
    				stringstream transformID(airspace[i]->getID());
    				int currentID;
@@ -151,7 +151,7 @@ using namespace std;
    			GLOBAL_OVAL = true;
    			bufferString+= to_string(GLOBAL_CLOCK) + " All aircrafts have entered entered OVAL/HOLDING state \n";
    		}
-   		//CHECK FOR ACCURACY OF THE COMMAND RELATIVE TO THE TASK ASKED TO DO
+   		
    		else if(TaskNumberInt == 8){
    			GLOBAL_OVAL = false;
    			bufferString+= to_string(GLOBAL_CLOCK) + "All aircrafts left their patterns\n";
@@ -168,20 +168,6 @@ using namespace std;
    				cout << "z-speed: " + to_string(airspace[i]->getSpeedZ()) << endl;
    			}
    			bufferString+= to_string(GLOBAL_CLOCK) + " All aircrafts' statuses acquired \n";
-   		}
-   	}
-
-
-   	void comm::deletePlane(int ID){
-   		for(int i = 0; i < airspace.size(); i++){
-   			stringstream transformID(airspace[i]->getID());
-   			int currentID;
-   			transformID >> currentID;
-   			if(currentID == ID) {
-   				bufferString+= to_string(GLOBAL_CLOCK) + " Aircraft with ID " + to_string(ID) + " left airspace \n";
-   				airspace.erase(airspace.begin()+i);
-   				break;
-   			}
    		}
    	}
 

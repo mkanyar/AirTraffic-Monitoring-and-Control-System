@@ -10,19 +10,13 @@
 #include "radar.h"
 
 using namespace std;
-
 class comm
-{
-	private:
+{private:
 
-    //vector <aircraft> airplanes;
 
 public:
-	comm();
+  comm();
    ~comm();
-  //comm(vector<aircraft>);
-
-    string getID();
 
     static void receiveMessage(vector <string> tokens);
 
@@ -30,8 +24,6 @@ public:
 
     static void hitScan(aircraft* hitobject);
 
-
-	//reporting aircraft leaving airspace (sporadic)
 };
 
 #endif /*COMM_H_*/

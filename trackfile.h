@@ -23,13 +23,8 @@ velocity and identification for each aircraft in the space.
 class trackfile{
 
 private:
-	//current position
 	aircraft ac_position;
-
-	//list of all past positions
 	vector<aircraft> ac_position_history;
-
-	//.txt file to persist previous positions
 	ofstream log_file;
 
 public:
@@ -37,7 +32,6 @@ public:
 
 	trackfile(aircraft ac);
 
-	//set new current position and save old into history data structure AND log.txt
 	void newCurrentPosition(int id, int speed_x, int speed_y, int speed_z, int x, int y, int z, int time);
 
 	aircraft getCurrentPosition();

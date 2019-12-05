@@ -102,10 +102,6 @@ void* trackfile::write_file_thread(void* mys){
 	fclose(pFile2);
 	bufferString="";
 	line=0;
-	//cout << s <<endl;
-	//global_clock++;
-	//cout << global_clock<<" Finish writing."<<endl;
-	//pthread_mutex_unlock( &mutex1 );
 	sleep(60);
 	}
 }

@@ -24,10 +24,8 @@ extern pthread_mutex_t e_list;
 class aircraft
 {
 private:
-	//attributes
 	int id, speed_x, speed_y, speed_z, x, y, z, time;
     int count=1;
-	//-1 id for unknown aircraft
 
 public:
 	bool OVAL;

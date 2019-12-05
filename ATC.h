@@ -13,7 +13,6 @@
 using namespace std;
 class ATC {
 private:
-	// string& stringstream ;
 	static const int upperX = 5280000;
 	static const int lowerX = 0;
 	static const int upperY = 5280000;
@@ -22,9 +21,6 @@ private:
 	static const int lowerZ = 0;
 
 	static void Collision_handling(aircraft* a1, aircraft* a2);
-
-	//static bool global_oval(aircraft* a1){};
-
 	static bool collision(aircraft* a, aircraft* b){
 
 		int vector_x,vector_y;
@@ -40,11 +36,9 @@ private:
 			vector_y = atempy-btempy;
 			if(sqrt(pow(vector_x,2)+pow(vector_y,2))<(3*5280) && abs(atempz-btempz)<1000)
 			{
-				//add to  a message such that communication can do something
 				while(pthread_mutex_lock( &buffstr )!=0);
 				bufferString+= "COLLISION|Time: "+ to_string(GLOBAL_CLOCK)+"| Aircraft ID "+to_string(a->getID())+" and aircraft ID "+to_string(b->getID())+" will collide at "+to_string(GLOBAL_CLOCK+i)+"\n";
 				pthread_mutex_unlock( &buffstr );
-				//sleep(1);
 				return true;
 			}
 

@@ -36,37 +36,6 @@ void radar::readInput(){
 		19, 194, 184, 598, 35000, 0, 2000, 221,
 		};
 
-/*	for (unsigned int i = 0; i < airplane_schedule.size(); ){
-		for(unsigned int j = 0; j < airplane_schedule.size(); j++){
-			switch(j) {
-				case j == 0:
-					$this->hit_list[i].setID(airplace_schedule[j]);
-					break;
-				case j%1 == 0:
-					$this->hit_list[i].setSpeedX(airplace_schedule[j]);
-					break;
-				case j%2 == 0:
-					$this->hit_list[i].setSpeedX(airplace_schedule[j]);
-					break;
-				default:
-			    // code block
-			}
-
-			if (j%7 == 0){i++;}
-		}
-	}*/
-}
-
-//display all the hits in the input file
-/*void radar::printHitList(){
-	cout << "Airspace Hits: " << endl;
-	for (unsigned int i = 0; i < hit_list.size(); i++){
-		cout << "Aircraft ID: " << hit_list[i].getID() << endl;
-		cout << "X: " << hit_list[i].getX() << " Y: " << hit_list[i].getY() << " Z: " << hit_list[i].getZ() << endl;
-		cout << "SpeedX: " << hit_list[i].getSpeedX() << " SpeedY: " << hit_list[i].getSpeedY() << " SpeedZ: " << hit_list[i].getSpeedZ() << endl;
-	}
-
-}*/
 void radar::printAll(){
 	cout << "Airspace Hits: " << endl;
 	for (unsigned int i = 0; i < GLOBAL_AIRCRAFT_LIST.size(); i++){
@@ -143,9 +112,6 @@ void* radar::populateBuffer(void* arg){
 				}
 			}
 			else{
-//				cout <<"BOOL-> "<< to_string() <<endl;
-//				cout << " "<<to_string(!(airspace[i]->getZ()>=lowerZ && airspace[i]->getZ() <= upperZ))<<endl;
-//				cout << airspace[i]->getID()<<" "<<GLOBAL_CLOCK<<endl;
 
 				if(!((airspace[i]->getX() >= lowerX && airspace[i]->getX() <= upperX) &&
 					 (airspace[i]->getY() >= lowerY && airspace[i]->getY() <= upperY) &&

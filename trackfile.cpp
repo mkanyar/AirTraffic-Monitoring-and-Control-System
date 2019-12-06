@@ -43,24 +43,7 @@ void trackfile::newCurrentPosition(int id, int speed_x, int speed_y, int speed_z
 		exit(1);
 	}
 
-/*	friend ostream & operator << (ostream &out, const Aircraft & obj)
-	{
-		out << obj.id << ","
-			<<obj.speed_x<< ","
-			<<obj.speed_y<< ","
-			<<obj.speed_z<< ","
-			<<obj.x<< ","
-			<<obj.y<< ","
-			<<obj.z<< ","
-			<<obj.time<<endl;
 
-		return out;
-	}*/
-
-
-
-	//log_file << previous_position << "\n";
-	//TODO serialize object first
 	log_file.close();
 
 	//update new current position
@@ -78,12 +61,10 @@ void* trackfile::write_file_thread(void* mys){
 	int i = 0;
 	const char* s;
 	while(true){
-	//while(pthread_mutex_lock( &mutex1 )!=0);
-	//cout << global_clock<<" Got lock"<<endl;
+
 	while(pthread_mutex_lock( &buffstr )!=0);
 	s = bufferString.c_str();
 	pthread_mutex_unlock( &buffstr );
-	//cout << global_clock << " Start writing"<<endl;
 	FILE *pFile2;
 	if(i==0){
 		pFile2 = fopen("Tracker.txt", "w");

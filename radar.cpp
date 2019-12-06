@@ -8,33 +8,6 @@ radar::~radar()
 {
 }
 
-/*void radar::hit(aircraft ac){
-	this->hit_list.push_back(ac);
-}*/
-
-void radar::readInput(){
-	int airplane_schedule[160] = {
-		0, -641, 283, 500, 95000, 101589, 10000, 13,
-		1, -223, -630, -526, 71000, 100000, 13000, 16,
-		-1, -180, -446, -186, 41000, 100000, 6000, 31,
-		3, 474, -239, 428, 38000, 0, 14000, 44,
-		-1, -535, 520, 360, 95000, 100000, 1000, 49,
-		-1, -164, -593, -501, 83000, 100000, 12000, 67,
-		6, 512, 614, 520, 86000, -1571, 9000, 87,
-		7, -275, 153, -399, 47000, 100000, 12000, 103,
-		8, -129, 525, -300, 92000, 100000, 1000, 123,
-		9, 437, 574, 339, 32000, 0, 8000, 129,
-		10, 568, 538, 192, 50000, 0, 4000, 133,
-		11, 347, 529, -599, 83000, -1799, 10000, 140,
-		12, -512, -482, 578, 35000, 100000, 4000, 142,
-		13, 619, -280, 194, 74000, 0, 10000, 157,
-		14, -141, 427, -321, 41000, 102251, 11000, 165,
-		15, -199, 242, -205, 56000, 100000, 4000, 172,
-		16, 315, -197, -365, 77000, 0, 1000, 187,
-		17, -138, 455, 602, 23000, 102290, 14000, 199,
-		18, -150, 557, -356, 38000, 100000, 1000, 204,
-		19, 194, 184, 598, 35000, 0, 2000, 221,
-		};
 
 void radar::printAll(){
 	cout << "Airspace Hits: " << endl;
@@ -46,29 +19,25 @@ void radar::printAll(){
 
 }
 
+//populates the entered_list vectors with aircraft that have entry time past the current global clock every second
 void radar::populateEntered (){
-	//every second
 	for (unsigned int i = 0; i < GLOBAL_AIRCRAFT_LIST.size(); i++){
 		if (GLOBAL_AIRCRAFT_LIST[i]->activate(bufferString) && std::find(entered_list.begin(), entered_list.end(), GLOBAL_AIRCRAFT_LIST[i])==entered_list.end()){
-			//hit_list.erase(hit_list.begin() + i);
 			entered_list.push_back(GLOBAL_AIRCRAFT_LIST[i]);
 		}
 	}
 }
-//narrow down hit_list to active_list that are within airspace
 
+//narrow down entered_list to active_list that are within the coordinates of the airspace every 15 seconds
 void* radar::populateAirspace(void* arg){
 	while(true){
-
 		auto start = std::chrono::system_clock::now();
-		//cout << "entered list size -> "<< entered_list.size()<<endl;
-		//vector here
+
 		for (unsigned int i = 0; i< entered_list.size(); i++){
 			if((entered_list[i]->getX() >= lowerX && entered_list[i]->getX() <= upperX) &&
 					(entered_list[i]->getY() >= lowerY && entered_list[i]->getY() <= upperY) &&
 					(entered_list[i]->getZ() >= lowerZ && entered_list[i]->getZ() <= upperZ)){
 				if(std::find(airspace.begin(), airspace.end(), entered_list[i])==airspace.end()){
-				//entered_list.erase(entered_list.begin() + i);
 				airspace.push_back(entered_list[i]);
 				while(pthread_mutex_lock( &buffstr )!=0);
 				bufferString += "ENTRY|Time: " + to_string(GLOBAL_CLOCK)+"| Aircraft "+to_string(entered_list[i]->getID())+" entered airspace\n";
@@ -83,13 +52,12 @@ void* radar::populateAirspace(void* arg){
 		}
 
 		auto end =  std::chrono::system_clock::now();
-		//cout << "Execution time is  "<<(chrono::duration_cast<chrono::milliseconds>(end - start).count())<<endl;
 		usleep(15000000-(chrono::duration_cast<chrono::microseconds>(end - start).count()));
 	}
 }
 
+//populate the buffer to use for displaying and writing to the history log
 void* radar::populateBuffer(void* arg){
-
 	while(true){
 		auto start = std::chrono::system_clock::now();
 		stringstream ss;
@@ -119,7 +87,6 @@ void* radar::populateBuffer(void* arg){
 				)
 
 				{
-					//cout << airspace[i]->getID()<<" "<<GLOBAL_CLOCK<<endl;
 					comm::hitScan(airspace[i]);
 				}
 				else{
@@ -143,7 +110,6 @@ void* radar::populateBuffer(void* arg){
 		bufferString += ss.str();
 		pthread_mutex_unlock( &buffstr );
 		auto end =  std::chrono::system_clock::now();
-		//cout << "Execution time is  "<<(chrono::duration_cast<chrono::milliseconds>(end - start).count())<<endl;
 		usleep(5000000-(chrono::duration_cast<chrono::microseconds>(end - start).count()));
 	}
 
